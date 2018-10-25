@@ -15,7 +15,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "com.simonk.project.ppoproject"
-        minSdkVersion 23
+        minSdkVersion 21
         targetSdkVersion 27
         versionCode 1
         versionName getVersion()
@@ -37,9 +37,11 @@ android {
         dev {
             dimension "stage"
             versionNameSuffix "-dev"
+            manifestPlaceholders.screenOrientation = "unspecified"
         }
         master {
             dimension "stage"
+            manifestPlaceholders.screenOrientation = "portrait"
         }
     }
 }
