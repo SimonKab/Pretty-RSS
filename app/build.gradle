@@ -5,7 +5,8 @@ def getVersion(){
     Process process = cmd.execute()
     String[] descriptionInfo = process.in.text.split('-')
     if (descriptionInfo.length == 1) {
-        return descriptionInfo[0] + "." + 0
+        descriptionInfo[0] = descriptionInfo[0].replace('\n', '')
+        return descriptionInfo[0]+"."+0
     }
     return descriptionInfo[0] + "." + descriptionInfo[1]
 }
@@ -19,6 +20,11 @@ android {
         versionCode 1
         versionName getVersion()
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "${rootProject.name}-${variant.versionName}.apk"
+        }
     }
     buildTypes {
         release {
