@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            app:startDestination="@+id/account_fragment">
+
+    <fragment
+        android:id="@+id/account_fragment"
+        android:name="com.simonk.project.ppoproject.ui.account.AccountFragment"
+        android:label="fragment_account">
+        <action
+            android:id="@+id/action_account_to_first_blank"
+            app:destination="@id/first_blank_fragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+        <action
+            android:id="@+id/action_account_to_second_blank"
+            app:destination="@id/second_blank_fragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/first_blank_fragment"
+        android:name="com.simonk.project.ppoproject.ui.blank.FirstBlankFragment"
+        android:label="fragment_first_blank">
+        <action
+            android:id="@+id/action_first_blank_to_account"
+            app:destination="@id/account_fragment"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_first_blank_to_second_blank"
+            app:destination="@id/second_blank_fragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/second_blank_fragment"
+        android:name="com.simonk.project.ppoproject.ui.blank.SecondBlankFragment"
+        android:label="fragment_second_blank">
+        <action
+            android:id="@+id/action_second_blank_to_first_blank"
+            app:destination="@id/first_blank_fragment"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_second_blank_to_account"
+            app:destination="@id/account_fragment"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/edit_account_fragment"
+        android:name="com.simonk.project.ppoproject.ui.account.EditAccountFragment"
+        android:label="fragment_edit_account">
+        <action
+            android:id="@+id/action_edit_account_to_gallery"
+            app:destination="@id/gallery_fragment"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/gallery_fragment"
+        android:name="com.simonk.project.ppoproject.ui.pictures.GalleryFragment"
+        android:label="fragment_gallery">
+    </fragment>
+
+</navigation>

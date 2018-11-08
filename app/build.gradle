@@ -16,6 +16,7 @@ def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
+    
     signingConfigs {
         config {
             keyAlias keystoreProperties['keyAlias']
@@ -24,20 +25,23 @@ android {
             storePassword keystoreProperties['storePassword']
         }
     }
-    compileSdkVersion 27
+
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.simonk.project.ppoproject"
         minSdkVersion 21
-        targetSdkVersion 27
+        targetSdkVersion 28
         versionCode 1
         versionName getVersion()
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
     android.applicationVariants.all { variant ->
         variant.outputs.all {
             outputFileName = "${rootProject.name}-${variant.versionName}.apk"
         }
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -45,6 +49,7 @@ android {
             signingConfig signingConfigs.config
         }
     }
+
     flavorDimensions "stage"
     productFlavors {
         dev {
@@ -57,13 +62,24 @@ android {
             manifestPlaceholders.screenOrientation = "portrait"
         }
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
+    def nav_version = "1.0.0-alpha07"
+
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'com.google.android.material:material:1.0.0'
+
+    implementation "android.arch.navigation:navigation-fragment:$nav_version"
+    implementation "android.arch.navigation:navigation-ui:$nav_version"
+
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'androidx.test:runner:1.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
 }
