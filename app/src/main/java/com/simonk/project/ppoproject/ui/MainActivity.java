@@ -10,8 +10,11 @@ import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -25,6 +28,8 @@ public class MainActivity extends BindingActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent intent = getIntent();
 
         final BottomNavigationView bottomNavigationView = getBinding().bottomNavigation;
 
@@ -82,4 +87,26 @@ public class MainActivity extends BindingActivity {
     public ActivityMainBinding getBinding() {
         return (ActivityMainBinding) super.getBinding();
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.about:
+                final NavController navController =
+                        Navigation.findNavController(this, R.id.nav_host_fragment);
+                navController.navigate(R.id.action_account_to_about);
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 }

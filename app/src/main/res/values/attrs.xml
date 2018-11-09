@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--<declare-styleable name="PermissionsLayout">
+        <attr name="layout" format="reference"/>
+    </declare-styleable>-->
+
+    <declare-styleable name="ErrorLayout">
+        <attr name="layout" format="reference"/>
+        <attr name="animation" format="boolean"/>
+    </declare-styleable>
+
+</resources>

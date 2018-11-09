@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">PpoProject</string>
+
+    <string name="permission_enable_button_text_def">Enable</string>
+    <string name="permission_description_textview_text_def">Please, enable permission</string>
+
+    <string name="permission_dialog_setting_button">Settings</string>
+    <string name="permission_dialog_cancel_button">Cancel</string>
+
+    <string name="permission_camera_description_textview">Please, enable camera permission to let take a photo</string>
+    <string name="permission_camera_dialog_title">Camera permission</string>
+    <string name="permission_camera_dialog_description">If you want take a photo, you should allow camera permission in settings</string>
+
+    <string name="permission_read_storage_description_textview">Please, enable storage permission to let show pictures</string>
+    <string name="permission_read_storage_dialog_title">Storage permission</string>
+    <string name="permission_read_storage_dialog_description">If you want see pictures, you should allow storage permission in settings</string>
+
+    <string name="permission_write_storage_description_textview">Please, enable storage permission to let write pictures</string>
+    <string name="permission_write_storage_dialog_title">Storage permission</string>
+    <string name="permission_write_storage_dialog_description">If you want see pictures, you should allow storage permission in settings</string>
+
+    <string name="name_template">%1$s %2$s</string>
 </resources>

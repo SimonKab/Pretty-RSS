@@ -21,6 +21,20 @@
             app:popExitAnim="@anim/slide_out_right"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"/>
+        <action
+            android:id="@+id/action_account_to_edit_account"
+            app:destination="@id/edit_account_fragment"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"/>
+        <action
+            android:id="@+id/action_account_to_about"
+            app:destination="@id/about_fragment"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"/>
 
     </fragment>
 
@@ -80,6 +94,12 @@
     <fragment
         android:id="@+id/gallery_fragment"
         android:name="com.simonk.project.ppoproject.ui.pictures.GalleryFragment"
+        android:label="fragment_gallery">
+    </fragment>
+
+    <fragment
+        android:id="@+id/about_fragment"
+        android:name="com.simonk.project.ppoproject.ui.about.AboutFragment"
         android:label="fragment_gallery">
     </fragment>
 

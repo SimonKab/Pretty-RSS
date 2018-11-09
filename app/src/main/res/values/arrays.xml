@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string-array name="gallery_storage_permission">
+        <item>android.permission.READ_EXTERNAL_STORAGE</item>
+        <item>Please, enable storage permission to allow show pictures stored in your device</item>
+        <item>Storage permission</item>
+        <item>Please, enable storage permission to allow show pictures stored in your device</item>
+    </string-array>
+
+    <string-array name="about_phone_permission">
+        <item>android.permission.READ_PHONE_STATE</item>
+        <item>Please, enable phone state permission</item>
+        <item>Phone state</item>
+        <item>Please, enable phone state permission</item>
+    </string-array>
+</resources>
