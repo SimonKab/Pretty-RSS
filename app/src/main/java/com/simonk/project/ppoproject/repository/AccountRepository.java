@@ -1,87 +1,114 @@
 package com.simonk.project.ppoproject.repository;
 
-import android.content.Context;
-import android.os.AsyncTask;
-
-import com.simonk.project.ppoproject.database.Database;
-import com.simonk.project.ppoproject.database.adapters.AccountAdapter;
-import com.simonk.project.ppoproject.database.entyties.AccountEntity;
+import com.simonk.project.ppoproject.auth.AuthFactory;
+import com.simonk.project.ppoproject.database.DatabaseFactory;
+import com.simonk.project.ppoproject.database.UserManager;
 import com.simonk.project.ppoproject.model.Account;
 
-import java.lang.ref.WeakReference;
-
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Transformations;
+import androidx.lifecycle.MutableLiveData;
 
 public class AccountRepository {
 
     private static AccountRepository sInstance;
 
-    private final Database mDatabase;
-
-    private LiveData<Account> mMainAccount;
-
-    private AccountRepository(Context context) {
-        mDatabase = Database.getInstance(context);
-
-        mMainAccount = transformAccountEntityToAccount(
-                Database.getInstance(context).accountProvider().loadMainAccount());
+    private AccountRepository() {
     }
 
-    public static AccountRepository getInstance(Context context) {
+    public static AccountRepository getInstance() {
         if (sInstance == null) {
             synchronized (AccountRepository.class) {
                 if (sInstance == null) {
-                    sInstance = new AccountRepository(context.getApplicationContext());
+                    sInstance = new AccountRepository();
                 }
             }
         }
         return sInstance;
     }
 
-    public LiveData<Account> getAccount(int id) {
-        return transformAccountEntityToAccount(mDatabase.accountProvider().loadAccount(id));
+    public String getCurrentUserEmail() {
+        return AuthFactory.getAuthManager().getCurrentUserEmail();
     }
 
-    public LiveData<Account> getMainAccount() {
-        return mMainAccount;
+    public String getCurrentUserId() {
+        return AuthFactory.getAuthManager().getCurrentUserId();
     }
 
-    public void saveAccount(Account account) {
-        new ChangeDatabase(() -> {
-            mDatabase.accountProvider().insertAccount(AccountAdapter.convertAccountToAccountEntity(account));
-        }).execute();
-    }
+    public LiveData<DatabaseResult<Account>> getCurrentUser() {
+        MutableLiveData<DatabaseResult<Account>> resultLiveData = new MutableLiveData<>();
 
-    public void updateAccount(Account account) {
-        new ChangeDatabase(() -> {
-            mDatabase.accountProvider().updateAccount(AccountAdapter.convertAccountToAccountEntity(account));
-        }).execute();
-    }
-
-    private LiveData<Account> transformAccountEntityToAccount(LiveData<AccountEntity> entity) {
-        return Transformations.map(entity,
-                AccountAdapter::convertAccountEntityToAccount);
-    }
-
-    private static class ChangeDatabase extends AsyncTask<Void, Void, Void> {
-
-        private WeakReference<ChangeAction> mChangeActionWeakReference;
-
-        public interface ChangeAction {
-            void change();
-        }
-
-        ChangeDatabase(ChangeAction action) {
-            mChangeActionWeakReference = new WeakReference<>(action);
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            if (mChangeActionWeakReference != null) {
-                mChangeActionWeakReference.get().change();
+        String userId = AuthFactory.getAuthManager().getCurrentUserId();
+        DatabaseFactory.getUserManager().getUserById(userId, new UserManager.RetrieveDataListener<Account>() {
+            @Override
+            public void onComplete(Account data) {
+                DatabaseResult<Account> result = new DatabaseResult<>();
+                result.data = data;
+                resultLiveData.setValue(result);
             }
-            return null;
+
+            @Override
+            public void onError(Exception error) {
+                DatabaseResult<Account> result = new DatabaseResult<>();
+                result.error = error;
+                resultLiveData.setValue(result);
+            }
+
+            @Override
+            public void onDisconnected() {
+                DatabaseResult<Account> result = new DatabaseResult<>();
+                result.disconnect = true;
+                resultLiveData.setValue(result);
+            }
+
+            @Override
+            public void onNetworkError() {
+                DatabaseResult<Account> result = new DatabaseResult<>();
+                result.networkError = true;
+                resultLiveData.setValue(result);
+            }
+        });
+
+        return resultLiveData;
+    }
+
+    public LiveData<DatabaseResult> saveUser(Account account) {
+        MutableLiveData<DatabaseResult> resultLiveData = new MutableLiveData<>();
+        UserManager.SaveDataListener listener = new UserManager.SaveDataListener() {
+            @Override
+            public void onComplete() {
+                DatabaseResult result = new DatabaseResult();
+                result.complete = true;
+                resultLiveData.setValue(result);
+            }
+
+            @Override
+            public void onNetworkError() {
+                DatabaseResult result = new DatabaseResult();
+                result.networkError = true;
+                resultLiveData.setValue(result);
+            }
+
+            @Override
+            public void onError(Exception error) {
+                DatabaseResult result = new DatabaseResult();
+                result.error = error;
+                resultLiveData.setValue(result);
+            }
+        };
+        if (account.getId() == null) {
+            DatabaseFactory.getUserManager().saveAccount(account, listener);
+        } else {
+            DatabaseFactory.getUserManager().saveAccount(account.getId(), account, listener);
         }
+        return resultLiveData;
+    }
+
+    public static class DatabaseResult<T> {
+        public T data;
+        public boolean complete;
+        public Exception error;
+
+        public boolean disconnect;
+        public boolean networkError;
     }
 }

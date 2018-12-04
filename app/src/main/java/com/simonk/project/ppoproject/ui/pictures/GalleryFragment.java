@@ -16,16 +16,13 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.simonk.project.ppoproject.R;
-import com.simonk.project.ppoproject.databinding.AccountFragmentBinding;
 import com.simonk.project.ppoproject.databinding.GalleryFragmentBinding;
 import com.simonk.project.ppoproject.error.ErrorLayout;
-import com.simonk.project.ppoproject.model.Account;
 import com.simonk.project.ppoproject.model.Picture;
 import com.simonk.project.ppoproject.permission.PermissionHandler;
 import com.simonk.project.ppoproject.permission.PermissionRequest;
 import com.simonk.project.ppoproject.permission.PermissionsAccessor;
 import com.simonk.project.ppoproject.utils.ImageUtil;
-import com.simonk.project.ppoproject.viewmodels.AccountViewModel;
 import com.simonk.project.ppoproject.utils.GalleryCursorLoader;
 import com.simonk.project.ppoproject.viewmodels.GalleryViewModel;
 
@@ -35,7 +32,6 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
@@ -104,7 +100,7 @@ public class GalleryFragment extends Fragment {
 
         ErrorLayout permissionRequestLayout = binding.galleryPermissionLayout;
         permissionRequestLayout.shouldAnimate(false);
-        mPermissionHandler = PermissionHandler.width(this).connect(permissionRequestLayout);
+        mPermissionHandler = PermissionHandler.with(this).connect(permissionRequestLayout);
 
         return binding.getRoot();
     }

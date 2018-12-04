@@ -1,6 +1,4 @@
-package com.simonk.project.ppoproject.database.entyties;
-
-import com.simonk.project.ppoproject.model.Picture;
+package com.simonk.project.ppoproject.database.local.entyties;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;

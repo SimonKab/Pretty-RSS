@@ -1,15 +1,12 @@
-package com.simonk.project.ppoproject.database;
+package com.simonk.project.ppoproject.database.local;
 
 import android.content.Context;
 
-import com.simonk.project.ppoproject.database.entyties.AccountEntity;
-import com.simonk.project.ppoproject.database.providers.AccountProvider;
+import com.simonk.project.ppoproject.database.local.entyties.AccountEntity;
+import com.simonk.project.ppoproject.database.local.providers.AccountProvider;
 
-import androidx.annotation.NonNull;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.room.migration.Migration;
-import androidx.sqlite.db.SupportSQLiteDatabase;
 
 @androidx.room.Database(entities = {AccountEntity.class}, version = 1, exportSchema = false)
 public abstract class Database extends RoomDatabase {

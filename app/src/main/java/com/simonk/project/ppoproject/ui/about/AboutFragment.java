@@ -5,8 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -14,22 +12,15 @@ import android.widget.TextView;
 import com.simonk.project.ppoproject.BuildConfig;
 import com.simonk.project.ppoproject.R;
 import com.simonk.project.ppoproject.databinding.AboutFragmentBinding;
-import com.simonk.project.ppoproject.databinding.AccountFragmentBinding;
 import com.simonk.project.ppoproject.error.ErrorLayout;
 import com.simonk.project.ppoproject.permission.PermissionHandler;
 import com.simonk.project.ppoproject.permission.PermissionRequest;
 import com.simonk.project.ppoproject.permission.PermissionsAccessor;
-import com.simonk.project.ppoproject.viewmodels.AccountViewModel;
-
-import org.w3c.dom.Text;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
 
 public class AboutFragment extends Fragment {
 
@@ -47,7 +38,7 @@ public class AboutFragment extends Fragment {
 
         ErrorLayout permissionRequestLayout = binding.galleryPermissionLayout;
         permissionRequestLayout.shouldAnimate(false);
-        mPermissionHandler = PermissionHandler.width(this).connect(permissionRequestLayout);
+        mPermissionHandler = PermissionHandler.with(this).connect(permissionRequestLayout);
 
         mVersionTextView = binding.version;
         mImeiTextView = binding.imei;

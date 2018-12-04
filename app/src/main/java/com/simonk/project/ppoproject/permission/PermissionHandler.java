@@ -42,7 +42,7 @@ public class PermissionHandler {
         mPermissionInterceptor = new PermissionInterceptor();
     }
 
-    public static PermissionHandler width(Fragment fragment) {
+    public static PermissionHandler with(Fragment fragment) {
         return new PermissionHandler(fragment);
     }
 

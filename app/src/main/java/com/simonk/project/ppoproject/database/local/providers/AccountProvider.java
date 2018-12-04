@@ -1,6 +1,6 @@
-package com.simonk.project.ppoproject.database.providers;
+package com.simonk.project.ppoproject.database.local.providers;
 
-import com.simonk.project.ppoproject.database.entyties.AccountEntity;
+import com.simonk.project.ppoproject.database.local.entyties.AccountEntity;
 
 import java.util.List;
 

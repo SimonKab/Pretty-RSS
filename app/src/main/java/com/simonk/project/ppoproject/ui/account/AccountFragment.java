@@ -9,8 +9,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.simonk.project.ppoproject.R;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -45,9 +53,30 @@ public class AccountFragment extends Fragment {
         });
 
         final AccountViewModel model = ViewModelProviders.of(this).get(AccountViewModel.class);
-        model.getAccount().observe(this, (account) -> {
-            if (account != null) {
-                setDate(account, binding);
+        model.getCurrentAccount().observe(this, (result) -> {
+            if (result == null) {
+                return;
+            }
+
+            if (result.data != null) {
+                setDate(result.data, binding);
+            }
+
+            if (result.complete) {
+                Toast.makeText(requireContext(), "Complete", Toast.LENGTH_LONG).show();
+            }
+            if (result.networkError) {
+                Snackbar.make(getView(), "Network error", Snackbar.LENGTH_LONG).show();
+            }
+            if (result.disconnect) {
+                Snackbar.make(getView(), "Disconnected", Snackbar.LENGTH_LONG).show();
+            }
+            if (result.error != null) {
+                if (result.error instanceof FirebaseException) {
+                    Snackbar.make(getView(), result.error.getMessage(), Snackbar.LENGTH_LONG).show();
+                } else {
+                    throw new RuntimeException(result.error);
+                }
             }
         });
 

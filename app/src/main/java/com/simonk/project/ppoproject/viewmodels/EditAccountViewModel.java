@@ -9,38 +9,54 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.Transformations;
 
 public class EditAccountViewModel extends AndroidViewModel {
 
-    private final LiveData<Account> mAccount;
-
     private final MutableLiveData<Account> mEditedAccount;
-
-    private AccountRepository mRepository;
 
     public EditAccountViewModel(@NonNull Application application) {
         super(application);
 
-        mRepository = AccountRepository.getInstance(application.getApplicationContext());
-
-        mAccount = mRepository.getMainAccount();
         mEditedAccount = new MutableLiveData<>();
-        mEditedAccount.setValue(mAccount.getValue());
+    }
+
+    public LiveData<AccountRepository.DatabaseResult<Account>> getInitialAccount() {
+        LiveData<AccountRepository.DatabaseResult<Account>> result =
+                AccountRepository.getInstance().getCurrentUser();
+        result.observeForever(new Observer<AccountRepository.DatabaseResult<Account>>() {
+            @Override
+            public void onChanged(AccountRepository.DatabaseResult<Account> accountDatabaseResult) {
+                if (accountDatabaseResult.data != null) {
+                    mEditedAccount.setValue(accountDatabaseResult.data);
+                }
+            }
+        });
+        return result;
     }
 
     public LiveData<Account> getAccount() {
         return mEditedAccount;
     }
 
-    public void setAccount(Account account) {
+    public void setAccount(String firstName, String lastName,
+                           String telephone, String address) {
+        Account account = new Account();
+        account.setFirstName(firstName);
+        account.setLastName(lastName);
+        account.setAddress(address);
+        account.setTelephone(telephone);
         mEditedAccount.setValue(account);
     }
 
-    public void saveAccount() {
-        if (mAccount.getValue() == null) {
-            mRepository.saveAccount(mEditedAccount.getValue());
-        } else {
-            mRepository.updateAccount(mEditedAccount.getValue());
+    public LiveData<AccountRepository.DatabaseResult> saveAccount() {
+        Account account = mEditedAccount.getValue();
+        if (account == null) {
+            throw new IllegalStateException("Account to save is null");
         }
+        account.setEmail(AccountRepository.getInstance().getCurrentUserEmail());
+        account.setId(AccountRepository.getInstance().getCurrentUserId());
+        return AccountRepository.getInstance().saveUser(account);
     }
 }

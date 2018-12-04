@@ -2,7 +2,7 @@ package com.simonk.project.ppoproject.model;
 
 public class Account {
 
-    private int mId;
+    private String mId;
     private Picture mPicture;
     private String mFirstName;
     private String mLastName;
@@ -11,11 +11,11 @@ public class Account {
     private String mEmail;
     private boolean mMain;
 
-    public int getId() {
+    public String getId() {
         return mId;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         mId = id;
     }
 

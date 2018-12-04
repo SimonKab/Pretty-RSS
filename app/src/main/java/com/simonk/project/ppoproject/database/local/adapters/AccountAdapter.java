@@ -1,6 +1,6 @@
-package com.simonk.project.ppoproject.database.adapters;
+package com.simonk.project.ppoproject.database.local.adapters;
 
-import com.simonk.project.ppoproject.database.entyties.AccountEntity;
+import com.simonk.project.ppoproject.database.local.entyties.AccountEntity;
 import com.simonk.project.ppoproject.model.Account;
 import com.simonk.project.ppoproject.model.Picture;
 
@@ -11,7 +11,7 @@ public class AccountAdapter {
             return null;
         }
         Account account = new Account();
-        account.setId(entity.id);
+        account.setId(String.valueOf(entity.id));
         account.setFirstName(entity.firstName);
         account.setLastName(entity.lastName);
         account.setTelephone(entity.telephone);
@@ -32,7 +32,7 @@ public class AccountAdapter {
             return null;
         }
         AccountEntity entity = new AccountEntity();
-        entity.id = account.getId();
+        entity.id = Integer.parseInt(account.getId());
         entity.firstName = account.getFirstName();
         entity.lastName = account.getLastName();
         entity.telephone = account.getTelephone();
