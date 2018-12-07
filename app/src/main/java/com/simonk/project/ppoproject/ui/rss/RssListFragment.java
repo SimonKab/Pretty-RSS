@@ -3,14 +3,19 @@ package com.simonk.project.ppoproject.ui.rss;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.simonk.project.ppoproject.R;
 import com.simonk.project.ppoproject.auth.AuthFactory;
 import com.simonk.project.ppoproject.databinding.RssListFragmentBinding;
@@ -19,6 +24,7 @@ import com.simonk.project.ppoproject.error.ErrorLayout;
 import com.simonk.project.ppoproject.error.InvalidRssUrlErrorInterceptor;
 import com.simonk.project.ppoproject.error.NotAuthenticatedErrorLayout;
 import com.simonk.project.ppoproject.error.RssUrlNotProvidedErrorInterceptor;
+import com.simonk.project.ppoproject.model.Picture;
 import com.simonk.project.ppoproject.repository.AccountRepository;
 import com.simonk.project.ppoproject.repository.RssRepository;
 import com.simonk.project.ppoproject.rss.RssChannel;
@@ -27,6 +33,8 @@ import com.simonk.project.ppoproject.ui.rss.util.RssListAdapter;
 import com.simonk.project.ppoproject.ui.web.WebActivity;
 import com.simonk.project.ppoproject.utils.DateUtils;
 import com.simonk.project.ppoproject.viewmodels.RssListViewModel;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -59,12 +67,16 @@ public class RssListFragment extends Fragment {
 
     private RssListViewModel mRssListViewModel;
 
+    private ViewGroup mAppBarContent;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent,
                              Bundle savedInstanceState) {
         RssListFragmentBinding binding =
                 DataBindingUtil.inflate(inflater, R.layout.rss_list_fragment, parent, false);
         initBinding(binding);
+
+        mAppBarContent.getLayoutTransition().setDuration(getResources().getInteger(R.integer.rss_channel_app_bar_animation_duration));
 
         if (getResources().getBoolean(R.bool.isTablet)) {
             mRssRecyclerView.setLayoutManager(new GridLayoutManager(requireContext(),
@@ -84,7 +96,6 @@ public class RssListFragment extends Fragment {
             }
         });
         mRssRecyclerView.setAdapter(mAdapter);
-        mRssRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
         mErrorLayout.addErrorInterceptor(new InvalidRssUrlErrorInterceptor());
         mErrorLayout.addErrorInterceptor(new RssUrlNotProvidedErrorInterceptor());
@@ -170,13 +181,17 @@ public class RssListFragment extends Fragment {
                     mSourceLastBuild.setText(DateUtils.convertRssDateToLocale(requireContext(),
                             data.getChannel().getLastBuildDate()));
 
-                    Glide.with(RssListFragment.this)
+                    Picasso.get()
                             .load(data.getChannel().getImage().getUrl())
+                            .noFade()
                             .into(mSourceImage);
 
-                    mAdapter.resolveActionChange(() -> {
-                        mAdapter.setItemsList(data.getChannel().getItems());
-                    });
+                    new Handler().postDelayed(() -> {
+                        mAdapter.resolveActionChange(() -> {
+                            mAdapter.setItemsList(data.getChannel().getItems());
+                        });
+                        mRssRecyclerView.startLayoutAnimation();
+                    }, getResources().getInteger(R.integer.rss_channel_app_bar_animation_duration));
                 }
 
                 if (rssChannelRemoteServerResult.error != null) {
@@ -196,6 +211,7 @@ public class RssListFragment extends Fragment {
         mContent = binding.rssListFragmentContent;
         mErrorLayout = binding.rssListFragmentError;
         mLoadingProgress = binding.rssListFragmentProgress;
+        mAppBarContent = binding.rssListFragmentAppBarContent;
     }
 
     private void setProgressView() {

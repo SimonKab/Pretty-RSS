@@ -3,16 +3,22 @@ package com.simonk.project.ppoproject.ui.rss.util;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.simonk.project.ppoproject.R;
 import com.simonk.project.ppoproject.databinding.RssListItemBinding;
 import com.simonk.project.ppoproject.rss.RssChannel;
 import com.simonk.project.ppoproject.rss.RssDataProvider;
 import com.simonk.project.ppoproject.ui.util.ObjectListAdapter;
 import com.simonk.project.ppoproject.utils.DateUtils;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 import java.util.Objects;
@@ -86,9 +92,32 @@ public class RssListAdapter extends ObjectListAdapter<RssChannel.Item, RssListAd
 
             String url = RssDataProvider.getImageUrlForItem(mItem);
             if (url != null) {
-                Glide.with(itemView.getContext())
-                        .load(url)
-                        .into(mImage);
+                mImage.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                    @Override
+                    public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                        Picasso.get()
+                                .load(url)
+                                .noFade()
+                                .resize(mImage.getMeasuredWidth(), mImage.getMeasuredHeight())
+                                .centerCrop()
+                                .into(mImage, new Callback() {
+                                    @Override
+                                    public void onSuccess() {
+                                        Animation fadeOut = new AlphaAnimation(0, 1);
+                                        fadeOut.setInterpolator(new LinearInterpolator());
+                                        fadeOut.setDuration(300);
+                                        mImage.startAnimation(fadeOut);
+                                    }
+
+                                    @Override
+                                    public void onError(Exception e) {
+
+                                    }
+                                });
+                        mImage.removeOnLayoutChangeListener(this);
+                    }
+                });
+
             }
         }
     }

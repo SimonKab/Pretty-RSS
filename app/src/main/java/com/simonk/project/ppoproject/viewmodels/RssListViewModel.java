@@ -70,8 +70,17 @@ public class RssListViewModel extends AndroidViewModel {
 
 
     public void setRssSource(Uri rssSource) {
-        mSourceUri.setValue(rssSource);
-        fetchRssChannel(rssSource);
+        if (rssSource == null) {
+            if (mSourceUri.getValue() == null) {
+                return;
+            }
+            fetchRssChannel(null);
+        } else {
+            if (!rssSource.equals(mSourceUri.getValue())) {
+                mSourceUri.setValue(rssSource);
+                fetchRssChannel(rssSource);
+            }
+        }
     }
 
     public LiveData<Uri> getRssSource() {
