@@ -18,14 +18,15 @@
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:animateLayoutChanges="true"
                 app:contentScrim="?attr/colorPrimary"
                 app:expandedTitleGravity="top"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
                 <FrameLayout
+                    android:id="@+id/rss_list_fragment_app_bar_content"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:animateLayoutChanges="true">
 
                     <com.simonk.project.ppoproject.error.ErrorLayout
                         android:id="@+id/rss_list_fragment_error"
@@ -115,6 +116,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="16dp"
+            android:layoutAnimation="@anim/news_layout_animation"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
