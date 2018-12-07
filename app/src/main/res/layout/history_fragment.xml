@@ -77,32 +77,24 @@
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/history_fragment_tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                app:tabBackground="?attr/selectableItemBackground"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            </com.google.android.material.tabs.TabLayout>
+
         </com.google.android.material.appbar.AppBarLayout>
 
-        <LinearLayout
-            android:id="@+id/history_fragment_history_layout"
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/history_fragment_view_pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:text="History"
-                android:layout_marginTop="32dp"
-                android:layout_marginStart="16dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/history_fragment_history"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="16dp"
-                />
-
-        </LinearLayout>
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

@@ -123,6 +123,7 @@ public class FirebaseHistoryManager extends FirebaseManager implements HistoryMa
                 for (DataSnapshot childrenSnapshot : dataSnapshot.getChildren()) {
                     SourceFirebaseModel model = childrenSnapshot.getValue(SourceFirebaseModel.class);
                     HistoryEntry historyEntry = SourceAdapter.convertFirebaseToModelSource(model);
+                    historyEntry.setId(childrenSnapshot.getKey());
                     historyEntryList.add(historyEntry);
                 }
 
@@ -181,9 +182,14 @@ public class FirebaseHistoryManager extends FirebaseManager implements HistoryMa
     public void addSourceEntry(String userId, HistoryEntry historyEntry, SaveDataListener listener) {
         DatabaseReference historyReference =
                 getFirebase().getReference("users").child(userId).child("sources");
-        String newHistoryEntry = historyReference.push().getKey();
+        if (historyEntry.getId() == null) {
+            String newHistoryEntry = historyReference.push().getKey();
+            historyReference = historyReference.child(newHistoryEntry);
+        } else {
+            historyReference = historyReference.child(historyEntry.getId());
+        }
         SourceFirebaseModel model = SourceAdapter.convertModelToFirebaseSource(historyEntry);
-        historyReference.child(newHistoryEntry).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
+        historyReference.setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
 
             @Override
             public void onComplete(@NonNull Task<Void> task) {

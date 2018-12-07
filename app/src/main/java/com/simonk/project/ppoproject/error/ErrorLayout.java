@@ -236,7 +236,7 @@ public class ErrorLayout extends RevealFrameLayout {
 
     }
 
-    @Override
+    /*@Override
     protected void onRestoreInstanceState(Parcelable state) {
         ErrorLayout.SavedState ss = (ErrorLayout.SavedState) state;
         super.onRestoreInstanceState(ss.getSuperState());
@@ -256,7 +256,7 @@ public class ErrorLayout extends RevealFrameLayout {
         ss.exception = mException;
         ss.errorType = mErrorType;
         return ss;
-    }
+    }*/
 
     private static class SavedState extends View.BaseSavedState {
         public Exception exception;

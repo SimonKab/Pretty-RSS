@@ -2,13 +2,13 @@ package com.simonk.project.ppoproject.model;
 
 public class HistoryEntry {
 
-    private int mId;
+    private String mId;
 
     private String mPath;
 
     private String mName;
 
-    public int getId() {
+    public String getId() {
         return mId;
     }
 
@@ -16,7 +16,7 @@ public class HistoryEntry {
         return mPath;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         mId = id;
     }
 
