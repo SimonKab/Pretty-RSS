@@ -61,6 +61,8 @@ public class GalleryFragment extends Fragment {
                              Bundle savedInstanceState) {
         GalleryFragmentBinding binding =
                 DataBindingUtil.inflate(inflater, R.layout.gallery_fragment, parent, false);
+
+        binding.appBarInclude.toolbarLayout.toolbar.setTitle("Gallery");
         ((AppCompatActivity)getActivity()).setSupportActionBar(binding.appBarInclude.toolbarLayout.toolbar);
 
         mFab = binding.galleryPhotoFab;

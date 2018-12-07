@@ -95,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
 
     class LoginAnimator {
 
-        void animateCardAndButtons(View card, View button, View registerButton, boolean appearance,
+        void animateCardAndButtons(View card, View button, View registerButton, View aboutButton, boolean appearance,
                                            @Nullable AnimatorListenerAdapter finishAnimatorListener) {
             int cardDelay = 0, buttonsDelay = 0;
             if (appearance) {
@@ -105,6 +105,9 @@ public class LoginActivity extends AppCompatActivity {
             }
             animateAppearanceDisappearance(card, cardDelay, appearance, null);
             animateAppearanceDisappearance(button, buttonsDelay, appearance, null);
+            if (aboutButton != null) {
+                animateAppearanceDisappearance(aboutButton, buttonsDelay, appearance, null);
+            }
             animateAppearanceDisappearance(registerButton, buttonsDelay, appearance, finishAnimatorListener);
         }
 

@@ -14,11 +14,9 @@
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-            <include
-                android:id="@+id/toolbar_layout"
-                layout="@layout/toolbar" />
 
             <LinearLayout
+                android:id="@+id/edit_account_image_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp">
@@ -28,6 +26,7 @@
                     android:layout_width="56dp"
                     android:layout_height="56dp"
                     android:layout_marginEnd="16dp"
+                    android:layout_gravity="center_vertical"
                     android:scaleType="center"
                     android:background="@drawable/border"
                     android:src="@drawable/ic_image"
@@ -57,9 +56,25 @@
 
             </LinearLayout>
 
+            <ProgressBar
+                android:id="@+id/edit_account_fragment_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone"/>
+
+            <com.simonk.project.ppoproject.error.ErrorLayout
+                android:id="@+id/edit_account_fragment_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
+
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/edit_account_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -89,6 +104,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
                         android:textColor="@android:color/black"
+                        android:inputType="phone"
                         android:hint="Telephone"/>
 
                 </LinearLayout>
@@ -106,7 +122,7 @@
                         android:src="@drawable/ic_location"/>
 
                     <EditText
-                        android:id="@+id/edit_account_location"
+                        android:id="@+id/edit_account_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="16sp"

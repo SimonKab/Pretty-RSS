@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.VectorDrawable;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import com.simonk.project.ppoproject.R;
 import com.simonk.project.ppoproject.databinding.AccountFragmentBinding;
 import com.simonk.project.ppoproject.databinding.LoginFragmentBinding;
 import com.simonk.project.ppoproject.repository.LoginRepository;
+import com.simonk.project.ppoproject.ui.about.AboutActivity;
 import com.simonk.project.ppoproject.viewmodels.LoginViewModel;
 
 import java.util.Objects;
@@ -60,6 +62,8 @@ public class LoginFragment extends Fragment {
 
     private TextView mErrorTextView;
 
+    private Button mAboutButton;
+
     private boolean mProcessingRequest;
 
     private boolean mAnimateCardAndButtons = true;
@@ -74,6 +78,13 @@ public class LoginFragment extends Fragment {
         View root = init(binding);
 
         setSignInButtonAnimation();
+
+        mAboutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(AboutActivity.getIntent(requireContext()));
+            }
+        });
 
         mRegisterButton.setOnClickListener(this::onRegisterButtonClicked);
         mSignInButton.setOnClickListener(this::onSignInButtonClicked);
@@ -94,7 +105,7 @@ public class LoginFragment extends Fragment {
         if (mAnimateCardAndButtons) {
             new Handler().postDelayed(() -> {
                 requireLoginActivity().new LoginAnimator()
-                        .animateCardAndButtons(mCardView, mSignInFrame, mRegisterButton,
+                        .animateCardAndButtons(mCardView, mSignInFrame, mRegisterButton, mAboutButton,
                                 true, null);
             }, getResources().getInteger(R.integer.show_login_view_delay));
 
@@ -110,6 +121,7 @@ public class LoginFragment extends Fragment {
         mEmailEditText = binding.loginFragmentEmail;
         mPasswordEditText = binding.loginFragmentPassword;
         mErrorTextView = binding.loginFragmentError;
+        mAboutButton = binding.loginLayoutAbout;
 
         return binding.getRoot();
     }
@@ -138,7 +150,7 @@ public class LoginFragment extends Fragment {
                 }
 
                 if (signInResult.complete) {
-                    Toast.makeText(requireContext(), "Complete", Toast.LENGTH_LONG).show();
+                    requireLoginActivity().startMainActivity();
                 }
                 if (signInResult.invalidCredentials) {
                     mErrorTextView.setText("Wrong email or password");
@@ -178,7 +190,7 @@ public class LoginFragment extends Fragment {
 
     private void onRegisterButtonClicked(View v) {
         requireLoginActivity().new LoginAnimator()
-                .animateCardAndButtons(mCardView, mSignInFrame, mRegisterButton, false,
+                .animateCardAndButtons(mCardView, mSignInFrame, mRegisterButton, mAboutButton, false,
                 new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {

@@ -2,7 +2,9 @@ package com.simonk.project.ppoproject.permission;
 
 import android.util.Pair;
 
+import com.simonk.project.ppoproject.R;
 import com.simonk.project.ppoproject.error.ErrorInterceptor;
+import com.simonk.project.ppoproject.error.ErrorLayout;
 
 import java.util.Collection;
 
@@ -10,7 +12,7 @@ import java.util.Collection;
  * Created by Simon on 23.08.2017.
  */
 
-public class PermissionInterceptor implements ErrorInterceptor<Pair<String, Boolean>> {
+public class PermissionInterceptor implements ErrorLayout.ErrorLayoutInterceptor {
 
     private PermissionRequest mPermissionRequest;
 
@@ -23,7 +25,7 @@ public class PermissionInterceptor implements ErrorInterceptor<Pair<String, Bool
     }
 
     @Override
-    public Pair<String, Boolean> handleError(Exception exception) {
+    public ErrorLayout.InterceptorData handleError(Exception exception) {
         return null;
     }
 
@@ -33,15 +35,15 @@ public class PermissionInterceptor implements ErrorInterceptor<Pair<String, Bool
     }
 
     @Override
-    public Pair<String, Boolean> handleError(ErrorType errorType) {
+    public ErrorLayout.InterceptorData handleError(ErrorType errorType) {
         if(mPermissionRequest == null) {
-            return new Pair<>("Some permissions was not enabled", true);
+            return new ErrorLayout.InterceptorData(R.string.error_unknown_permission, true);
         }
 
         Collection<PermissionRequest.Descriptions> descriptions =
                 mPermissionRequest.findDescriptions(mPermissionRequest.getNotGrantedPermissions()).values();
         String descriptionText = PermissionRequest.Descriptions.combineMainDescriptions(descriptions);
-        return new Pair<>(descriptionText, true);
+        return new ErrorLayout.InterceptorData(descriptionText, true);
     }
 
     public void setPermissionRequest(PermissionRequest permission) {

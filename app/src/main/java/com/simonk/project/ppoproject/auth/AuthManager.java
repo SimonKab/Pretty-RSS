@@ -23,4 +23,5 @@ public interface AuthManager {
     void signInUser(String email, String password, AuthListener listener);
     void registerUser(String email, String password, AuthListener listener);
 
+    void signOut();
 }

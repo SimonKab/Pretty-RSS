@@ -13,18 +13,21 @@ import com.simonk.project.ppoproject.database.UserManager;
 import com.simonk.project.ppoproject.database.firebase.adapter.AccountAdapter;
 import com.simonk.project.ppoproject.database.firebase.model.AccountFirebaseModel;
 import com.simonk.project.ppoproject.model.Account;
+import com.simonk.project.ppoproject.network.NetworkFactory;
 
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import androidx.annotation.NonNull;
 
-public class FirebaseUserManager implements UserManager {
+public class FirebaseUserManager extends FirebaseManager implements UserManager {
 
     @Override
     public void getUserById(String userId, RetrieveDataListener<Account> dataListener) {
         DatabaseReference userReference =
-                FirebaseDatabase.getInstance().getReference("users").child(userId);
+                getFirebase().getReference("users").child(userId);
         userReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -60,7 +63,7 @@ public class FirebaseUserManager implements UserManager {
     @Override
     public void saveAccount(Account account, SaveDataListener listener) {
         DatabaseReference userReference =
-                FirebaseDatabase.getInstance().getReference("users");
+                getFirebase().getReference("users");
         String newUserId = userReference.push().getKey();
         if (newUserId == null) {
             throw new IllegalStateException("Firebase returns null id for new user");
@@ -72,7 +75,7 @@ public class FirebaseUserManager implements UserManager {
     @Override
     public void saveAccount(String userId, Account account, SaveDataListener listener) {
         DatabaseReference userReference =
-                FirebaseDatabase.getInstance().getReference("users");
+                getFirebase().getReference("users");
 
         internalSaveAccount(userReference, userId, account, listener);
     }
@@ -80,25 +83,39 @@ public class FirebaseUserManager implements UserManager {
     private void internalSaveAccount(DatabaseReference userReference, String userId,
                                      Account account, SaveDataListener listener) {
         AccountFirebaseModel model = AccountAdapter.convertModelToFirebaseAccount(account);
-        userReference.child(userId).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (listener == null) {
-                    return;
-                }
+        userReference = userReference.child(userId);
 
-                if (task.isSuccessful()) {
-                    listener.onComplete();
-                } else {
-                    try {
-                        throw Objects.requireNonNull(task.getException());
-                    } catch (FirebaseNetworkException error) {
-                        listener.onNetworkError();
-                    } catch (Exception e) {
-                        listener.onError(e);
+        Map<String, Object> childUpdated = new HashMap<>();
+        childUpdated.put("firstName", model.firstName);
+        childUpdated.put("lastName", model.lastName);
+        childUpdated.put("address", model.address);
+        childUpdated.put("telephone", model.telephone);
+        childUpdated.put("email", model.email);
+        Task<Void> task = userReference.updateChildren(childUpdated);
+
+        if (NetworkFactory.getConnectionManager().isConnected()) {
+            task.addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (listener == null) {
+                        return;
+                    }
+
+                    if (task.isSuccessful()) {
+                        listener.onComplete();
+                    } else {
+                        try {
+                            throw Objects.requireNonNull(task.getException());
+                        } catch (FirebaseNetworkException error) {
+                            listener.onNetworkError();
+                        } catch (Exception e) {
+                            listener.onError(e);
+                        }
                     }
                 }
-            }
-        });
+            });
+        } else {
+            listener.onComplete();
+        }
     }
 }

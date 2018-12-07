@@ -74,7 +74,7 @@ public class DetailsFragment extends Fragment {
 
         new Handler().post(() -> {
             requireLoginActivity().new LoginAnimator()
-                    .animateCardAndButtons(mCardView, mFinishButton, mFinishFrame,
+                    .animateCardAndButtons(mCardView, mFinishButton, mFinishFrame, null,
                             true, null);
         });
     }

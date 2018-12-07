@@ -18,10 +18,6 @@ public class AccountAdapter {
         account.setEmail(model.email);
         account.setAddress(model.address);
 
-        Picture picture = new Picture();
-        picture.setPath(model.picture);
-        account.setPicrute(picture);
-
         return account;
     }
 
@@ -36,7 +32,6 @@ public class AccountAdapter {
         model.telephone = account.getTelephone();
         model.email = account.getEmail();
         model.address = account.getAddress();
-        model.picture = account.getPicture() == null ? null : account.getPicture().getPath();
 
         return model;
     }

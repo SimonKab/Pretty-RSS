@@ -53,6 +53,11 @@ public class FirebaseAuthManager implements AuthManager {
         setOnTaskCompleteListener(task, listener);
     }
 
+    @Override
+    public void signOut() {
+        FirebaseAuth.getInstance().signOut();
+    }
+
     private void setOnTaskCompleteListener(Task<AuthResult> task, AuthListener listener) {
         task.addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override

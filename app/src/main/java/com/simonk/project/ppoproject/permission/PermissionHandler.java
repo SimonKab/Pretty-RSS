@@ -48,7 +48,7 @@ public class PermissionHandler {
 
     public void setPermissionInterceptor(PermissionInterceptor errorInterceptor) {
         mPermissionInterceptor = errorInterceptor;
-        mLayout.setErrorInterceptor(mPermissionInterceptor);
+        mLayout.addErrorInterceptor(mPermissionInterceptor);
     }
 
     private class OnEnableClickListenerImpl implements ErrorLayout.OnRetryListener {
@@ -119,7 +119,7 @@ public class PermissionHandler {
 
     public PermissionHandler connect(ErrorLayout permissionsLayout) {
         mLayout = permissionsLayout;
-        mLayout.setErrorInterceptor(mPermissionInterceptor);
+        mLayout.addErrorInterceptor(mPermissionInterceptor);
         mLayout.setErrorButtonText(mFragment.getString(R.string.permission_enable_button_text_def));
         return this;
     }

@@ -18,6 +18,7 @@ import com.google.firebase.FirebaseException;
 import com.simonk.project.ppoproject.R;
 import com.simonk.project.ppoproject.databinding.RegisterFragmentBinding;
 import com.simonk.project.ppoproject.repository.LoginRepository;
+import com.simonk.project.ppoproject.ui.about.AboutActivity;
 import com.simonk.project.ppoproject.viewmodels.RegisterViewModel;
 
 import androidx.annotation.NonNull;
@@ -45,6 +46,8 @@ public class RegisterFragment extends Fragment {
 
     private TextView mErrorTextView;
 
+    private Button mAboutButton;
+
     private RegisterViewModel mViewModel;
 
     @Override
@@ -55,6 +58,13 @@ public class RegisterFragment extends Fragment {
         View root = init(binding);
 
         setRegisterButtonAnimation();
+
+        mAboutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(AboutActivity.getIntent(requireContext()));
+            }
+        });
 
         mRegisterButton.setOnClickListener(this::onRegisterButtonClicked);
         mSignInButton.setOnClickListener(this::onSignInButtonClicked);
@@ -74,7 +84,7 @@ public class RegisterFragment extends Fragment {
 
         new Handler().post(() -> {
             requireLoginActivity().new LoginAnimator()
-                    .animateCardAndButtons(mCardView, mRegisterFrame, mSignInButton,
+                    .animateCardAndButtons(mCardView, mRegisterFrame, mSignInButton, mAboutButton,
                             true, null);
         });
     }
@@ -90,6 +100,8 @@ public class RegisterFragment extends Fragment {
         mPasswordConfirmEditText = binding.registerFragmentPasswordConfirm;
 
         mErrorTextView = binding.registerFragmentError;
+
+        mAboutButton = binding.loginLayoutAbout;
 
         return binding.getRoot();
     }
@@ -181,7 +193,7 @@ public class RegisterFragment extends Fragment {
     private void onOtherFragmentStart(int navigationId) {
         NavController navController = Navigation.findNavController(getView());
         requireLoginActivity().new LoginAnimator()
-                .animateCardAndButtons(mCardView, mRegisterFrame, mSignInButton, false,
+                .animateCardAndButtons(mCardView, mRegisterFrame, mSignInButton, mAboutButton, false,
                         new AnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(Animator animation) {

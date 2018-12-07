@@ -14,14 +14,14 @@ import androidx.room.Update;
 @Dao
 public interface AccountProvider {
 
-    @Query("SELECT * FROM accounts")
-    LiveData<List<AccountEntity>> loadAllAccounts();
+    @Query("SELECT * FROM accounts WHERE id=:id")
+    LiveData<AccountEntity> loadAccount(String id);
 
     @Query("SELECT * FROM accounts WHERE id=:id")
-    LiveData<AccountEntity> loadAccount(int id);
+    AccountEntity getAccount(String id);
 
-    @Query("SELECT * FROM accounts WHERE main!=0")
-    LiveData<AccountEntity> loadMainAccount();
+    @Query("SELECT * FROM accounts")
+    LiveData<List<AccountEntity>> loadAccounts();
 
     @Insert
     void insertAccount(AccountEntity entity);

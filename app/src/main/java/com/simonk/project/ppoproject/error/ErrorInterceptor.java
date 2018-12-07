@@ -16,5 +16,5 @@ public interface ErrorInterceptor<T> extends Serializable {
 
     T handleError(ErrorType errorType);
 
-    enum ErrorType { NOTHING_FOUND, PERMISSION }
+    enum ErrorType { NOTHING_FOUND, PERMISSION, NETWORK_ERROR, RSS_URL_NOT_PROVIDED, NOT_AUTHENTICATED }
 }

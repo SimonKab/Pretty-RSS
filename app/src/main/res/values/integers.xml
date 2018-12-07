@@ -3,4 +3,5 @@
     <integer name="show_login_view_delay">300</integer>
     <integer name="login_animation_duration">500</integer>
     <integer name="login_animation_view_delay">150</integer>
+    <integer name="items_in_grid">0</integer>
 </resources>

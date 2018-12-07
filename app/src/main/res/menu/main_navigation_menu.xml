@@ -3,20 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/account_fragment"
+        android:id="@+id/news_fragment"
         android:icon="@drawable/ic_account"
-        android:title="Account"
+        android:title="News"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/search_fragment"
+        android:icon="@drawable/ic_account"
+        android:title="Search"
         app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/first_blank_fragment"
+        android:id="@+id/account_fragment"
         android:icon="@drawable/ic_account"
-        android:title="First"
-        app:showAsAction="ifRoom"/>
-
-    <item android:id="@+id/second_blank_fragment"
-        android:icon="@drawable/ic_account"
-        android:title="Second"
+        android:title="Account"
         app:showAsAction="ifRoom"/>
 
 </menu>

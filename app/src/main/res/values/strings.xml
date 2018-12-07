@@ -22,4 +22,13 @@
     <string name="error_nothing_found">Nothing found</string>
 
     <string name="name_template">%1$s %2$s</string>
+
+    <string name="error_general">Something going wrong</string>
+    <string name="error_unknown_permission">Some permissions was not enabled</string>
+    <string name="error_network">Network error. Please check connection</string>
+    <string name="error_rss_url">Wrong rss url</string>
+    <string name="error_rss_not_provided">Please enter rss source</string>
+    <string name="error_not_authenticated">Please sign in to start</string>
+
+    <string name="nothing_found">Nothing found</string>
 </resources>

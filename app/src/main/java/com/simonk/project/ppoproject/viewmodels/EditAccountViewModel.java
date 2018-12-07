@@ -3,6 +3,7 @@ package com.simonk.project.ppoproject.viewmodels;
 import android.app.Application;
 
 import com.simonk.project.ppoproject.model.Account;
+import com.simonk.project.ppoproject.model.Picture;
 import com.simonk.project.ppoproject.repository.AccountRepository;
 
 import androidx.annotation.NonNull;
@@ -15,34 +16,48 @@ import androidx.lifecycle.Transformations;
 public class EditAccountViewModel extends AndroidViewModel {
 
     private final MutableLiveData<Account> mEditedAccount;
+    private final MutableLiveData<Account> mInitialAccount;
 
     public EditAccountViewModel(@NonNull Application application) {
         super(application);
 
         mEditedAccount = new MutableLiveData<>();
+        mInitialAccount = new MutableLiveData<>();
     }
 
-    public LiveData<AccountRepository.DatabaseResult<Account>> getInitialAccount() {
+    public LiveData<AccountRepository.DatabaseResult<Account>> fetchInitialAccount() {
         LiveData<AccountRepository.DatabaseResult<Account>> result =
-                AccountRepository.getInstance().getCurrentUser();
+                AccountRepository.getInstance().getCurrentUser(getApplication().getApplicationContext());
         result.observeForever(new Observer<AccountRepository.DatabaseResult<Account>>() {
             @Override
             public void onChanged(AccountRepository.DatabaseResult<Account> accountDatabaseResult) {
                 if (accountDatabaseResult.data != null) {
-                    mEditedAccount.setValue(accountDatabaseResult.data);
+                    mInitialAccount.setValue(accountDatabaseResult.data);
                 }
             }
         });
         return result;
     }
 
-    public LiveData<Account> getAccount() {
+    public LiveData<String> getCurrentUserImage() {
+        return AccountRepository.getInstance().getCurrentUserImage(getApplication().getApplicationContext());
+    }
+
+    public LiveData<Account> getInitialAccount() {
+        return mInitialAccount;
+    }
+
+    public LiveData<Account> getEditedAccount() {
         return mEditedAccount;
     }
 
-    public void setAccount(String firstName, String lastName,
+    public void setEditedAccount(String firstName, String lastName,
                            String telephone, String address) {
-        Account account = new Account();
+        Account account = mEditedAccount.getValue();
+        if (account == null) {
+            account = new Account();
+        }
+
         account.setFirstName(firstName);
         account.setLastName(lastName);
         account.setAddress(address);
@@ -50,13 +65,26 @@ public class EditAccountViewModel extends AndroidViewModel {
         mEditedAccount.setValue(account);
     }
 
-    public LiveData<AccountRepository.DatabaseResult> saveAccount() {
+    public void setImagePath(String path) {
+        Picture picture = new Picture();
+        picture.setPath(path);
+
+        Account account = mEditedAccount.getValue();
+        if (account == null) {
+            account = new Account();
+        }
+
+        account.setPicrute(picture);
+        mEditedAccount.setValue(account);
+    }
+
+    public LiveData<AccountRepository.DatabaseResult> saveEditedAccount() {
         Account account = mEditedAccount.getValue();
         if (account == null) {
             throw new IllegalStateException("Account to save is null");
         }
         account.setEmail(AccountRepository.getInstance().getCurrentUserEmail());
         account.setId(AccountRepository.getInstance().getCurrentUserId());
-        return AccountRepository.getInstance().saveUser(account);
+        return AccountRepository.getInstance().saveUser(getApplication().getApplicationContext(), account);
     }
 }

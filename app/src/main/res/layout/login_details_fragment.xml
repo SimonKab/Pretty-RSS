@@ -80,7 +80,6 @@
                         android:id="@+id/login_details_fragment_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="textPassword"
                         android:hint="Address"/>
 
                 </com.google.android.material.textfield.TextInputLayout>

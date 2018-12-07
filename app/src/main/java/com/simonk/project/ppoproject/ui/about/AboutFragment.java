@@ -34,6 +34,8 @@ public class AboutFragment extends Fragment {
                              Bundle savedInstanceState) {
         AboutFragmentBinding binding =
                 DataBindingUtil.inflate(inflater, R.layout.about_fragment, parent, false);
+
+        binding.appBarInclude.toolbarLayout.toolbar.setTitle("About");
         ((AppCompatActivity)getActivity()).setSupportActionBar(binding.appBarInclude.toolbarLayout.toolbar);
 
         ErrorLayout permissionRequestLayout = binding.galleryPermissionLayout;

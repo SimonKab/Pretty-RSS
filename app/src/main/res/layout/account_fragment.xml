@@ -19,9 +19,11 @@
                 layout="@layout/toolbar" />
 
             <LinearLayout
+                android:id="@+id/account_fragment_image_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="16dp">
+                android:layout_margin="16dp"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/account_picture"
@@ -42,9 +44,25 @@
 
             </LinearLayout>
 
+            <ProgressBar
+                android:id="@+id/account_fragment_progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone"/>
+
+            <com.simonk.project.ppoproject.error.ErrorLayout
+                android:id="@+id/account_fragment_error"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
+
         </com.google.android.material.appbar.AppBarLayout>
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/account_fragment_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -119,6 +137,15 @@
                         />
 
                 </LinearLayout>
+
+                <Button
+                    android:id="@+id/account_fragment_sign_out"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sign out"
+                    android:layout_marginTop="32dp"
+                    android:textColor="@color/colorAccent"
+                    android:background="?android:attr/selectableItemBackground"/>
 
             </LinearLayout>
 

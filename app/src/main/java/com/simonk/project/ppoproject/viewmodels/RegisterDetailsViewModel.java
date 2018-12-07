@@ -30,7 +30,7 @@ public class RegisterDetailsViewModel extends AndroidViewModel {
         account.setAddress(address);
         account.setEmail(email);
         account.setTelephone(telephone);
-        return AccountRepository.getInstance().saveUser(account);
+        return AccountRepository.getInstance().saveUser(getApplication().getApplicationContext(), account);
     }
 
 }

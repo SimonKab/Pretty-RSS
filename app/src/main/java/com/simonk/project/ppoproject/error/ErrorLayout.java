@@ -16,6 +16,9 @@ import android.widget.TextView;
 import com.simonk.project.ppoproject.R;
 import com.simonk.project.ppoproject.ui.RevealFrameLayout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
@@ -39,7 +42,7 @@ public class ErrorLayout extends RevealFrameLayout {
     protected Exception mException;
     protected ErrorInterceptor.ErrorType mErrorType;
 
-    protected ErrorInterceptor<Pair<String, Boolean>> mErrorInterceptor;
+    protected List<ErrorLayoutInterceptor> mErrorInterceptor;
 
     public ErrorLayout(Context context) {
         this(context, null);
@@ -105,7 +108,7 @@ public class ErrorLayout extends RevealFrameLayout {
         }
 
         if (mErrorInterceptor == null) {
-            mErrorInterceptor = mDefaultInterceptor;
+            mErrorInterceptor = new ArrayList<>();
         }
 
         setVisibility(GONE);
@@ -125,12 +128,8 @@ public class ErrorLayout extends RevealFrameLayout {
         });
     }
 
-    public void setErrorInterceptor(ErrorInterceptor<Pair<String, Boolean>> errorInterceptor) {
-        mErrorInterceptor = errorInterceptor;
-    }
-
-    public boolean checkIsItHandlingError(Exception exception) {
-        return mErrorInterceptor.checkIsItHandlingError(exception);
+    public void addErrorInterceptor(ErrorLayoutInterceptor errorInterceptor) {
+        mErrorInterceptor.add(errorInterceptor);
     }
 
     public void clearError() {
@@ -140,39 +139,70 @@ public class ErrorLayout extends RevealFrameLayout {
         mErrorButton.setText("Retry");
     }
 
-    public void handleError(Exception exception) {
-        mException = exception;
-        Pair<String, Boolean> entry = mErrorInterceptor.handleError(exception);
-        if (entry == null) {
-            entry = mDefaultInterceptor.handleError(exception);
-        }
-        mErrorTextView.setText(entry.first);
-        mErrorButton.setVisibility(entry.second ? VISIBLE : GONE);
+    public boolean checkIsItHandlingError(ErrorInterceptor.ErrorType exception) {
+        return findInterceptor(exception) != null;
     }
 
-    public boolean checkIsItHandlingError(ErrorInterceptor.ErrorType exception) {
-        return mErrorInterceptor.checkIsItHandlingError(exception);
+    public boolean checkIsItHandlingError(Exception exception) {
+        return findInterceptor(exception) != null;
+    }
+
+    public void handleError(Exception exception) {
+        mException = exception;
+        ErrorLayoutInterceptor interceptor = findInterceptor(exception);
+        if (interceptor == null) {
+            interceptor = mDefaultInterceptor;
+        }
+        handleErrorInternal(interceptor.handleError(exception));
     }
 
     public void handleError(ErrorInterceptor.ErrorType errorType) {
         mErrorType = errorType;
-        Pair<String, Boolean> entry = mErrorInterceptor.handleError(errorType);
-        if (entry == null) {
-            entry = mDefaultInterceptor.handleError(errorType);
+        ErrorLayoutInterceptor interceptor = findInterceptor(errorType);
+        if (interceptor == null) {
+            interceptor = mDefaultInterceptor;
         }
-        mErrorTextView.setText(entry.first);
-        mErrorButton.setVisibility(entry.second ? VISIBLE : GONE);
+        handleErrorInternal(interceptor.handleError(errorType));
     }
 
-    private ErrorInterceptor<Pair<String, Boolean>> mDefaultInterceptor = new ErrorInterceptor<Pair<String, Boolean>>() {
+    private void handleErrorInternal(InterceptorData interceptorData) {
+        if (interceptorData.descriptionId != -1) {
+            mErrorTextView.setText(getResources().getString(interceptorData.descriptionId));
+        } else {
+            mErrorTextView.setText(interceptorData.description);
+        }
+        mErrorButton.setVisibility(interceptorData.retryButtonVisible ? VISIBLE : GONE);
+    }
+
+    private ErrorLayoutInterceptor findInterceptor(Exception exception) {
+        for (ErrorLayoutInterceptor interceptor : mErrorInterceptor) {
+            if (interceptor.checkIsItHandlingError(exception)) {
+                return interceptor;
+            }
+        }
+
+        return null;
+    }
+
+    private ErrorLayoutInterceptor findInterceptor(ErrorInterceptor.ErrorType error) {
+        for (ErrorLayoutInterceptor interceptor : mErrorInterceptor) {
+            if (interceptor.checkIsItHandlingError(error)) {
+                return interceptor;
+            }
+        }
+
+        return null;
+    }
+
+    private ErrorLayoutInterceptor mDefaultInterceptor = new ErrorLayoutInterceptor() {
         @Override
         public boolean checkIsItHandlingError(Exception exception) {
             return true;
         }
 
         @Override
-        public Pair<String, Boolean> handleError(Exception exception) {
-            return new Pair<>("Все плохо", true);
+        public InterceptorData handleError(Exception exception) {
+            return new InterceptorData(R.string.error_general, true);
         }
 
         @Override
@@ -181,10 +211,30 @@ public class ErrorLayout extends RevealFrameLayout {
         }
 
         @Override
-        public Pair<String, Boolean> handleError(ErrorType errorType) {
-            return new Pair<>("Все плохо", true);
+        public InterceptorData handleError(ErrorType errorType) {
+            return new InterceptorData(R.string.error_general, true);
         }
     };
+
+    public static class InterceptorData {
+        public int descriptionId = -1;
+        public String description;
+        public boolean retryButtonVisible;
+
+        public InterceptorData(int descriptionId, boolean retryButtonVisible) {
+            this.descriptionId = descriptionId;
+            this.retryButtonVisible = retryButtonVisible;
+        }
+
+        public InterceptorData(String description, boolean retryButtonVisible) {
+            this.description = description;
+            this.retryButtonVisible = retryButtonVisible;
+        }
+    }
+
+    public interface ErrorLayoutInterceptor extends ErrorInterceptor<InterceptorData> {
+
+    }
 
     @Override
     protected void onRestoreInstanceState(Parcelable state) {

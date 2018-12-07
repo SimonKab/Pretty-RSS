@@ -12,12 +12,6 @@ public class AccountAdapter {
         }
         Account account = new Account();
         account.setId(String.valueOf(entity.id));
-        account.setFirstName(entity.firstName);
-        account.setLastName(entity.lastName);
-        account.setTelephone(entity.telephone);
-        account.setAddress(entity.address);
-        account.setMain(entity.main);
-        account.setEmail(entity.email);
 
         Picture picture = new Picture();
         picture.setPath(entity.picture);
@@ -32,13 +26,8 @@ public class AccountAdapter {
             return null;
         }
         AccountEntity entity = new AccountEntity();
-        entity.id = Integer.parseInt(account.getId());
-        entity.firstName = account.getFirstName();
-        entity.lastName = account.getLastName();
-        entity.telephone = account.getTelephone();
-        entity.address = account.getAddress();
-        entity.main = account.isMain();
-        entity.email = account.getEmail();
+        entity.id = account.getId();
+
         if (account.getPicture() != null) {
             entity.picture = account.getPicture().getPath();
         }

@@ -25,4 +25,9 @@
         <item name="android:colorControlHighlight">@color/colorPrimary26</item>
     </style>
 
+    <style name="ConnectionPopupWindowAnimation">
+        <item name="android:windowEnterAnimation">@anim/slide_in_top</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_top</item>
+    </style>
+
 </resources>

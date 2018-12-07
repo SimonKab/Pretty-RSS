@@ -13,20 +13,39 @@ import androidx.navigation.ui.NavigationUI;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.transition.Slide;
+import android.transition.Transition;
+import android.transition.TransitionInflater;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.simonk.project.ppoproject.R;
 import com.simonk.project.ppoproject.databinding.ActivityMainBinding;
+import com.simonk.project.ppoproject.network.ConnectionManager;
+import com.simonk.project.ppoproject.network.NetworkFactory;
+import com.simonk.project.ppoproject.rss.RssChannel;
+import com.simonk.project.ppoproject.ui.about.AboutActivity;
 
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
+
+import java.io.File;
 import java.util.List;
 
 public class MainActivity extends BindingActivity {
+
+    private ConnectionPopupWindow mConnectionPopupWindow;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,23 +71,23 @@ public class MainActivity extends BindingActivity {
 
                 switch (menuItem.getItemId()) {
                     case R.id.account_fragment:
-                        if (current == R.id.first_blank_fragment) {
+                        if (current == R.id.news_fragment) {
                             navController.navigate(R.id.action_first_blank_to_account);
                         }
-                        if (current == R.id.second_blank_fragment) {
+                        if (current == R.id.search_fragment) {
                             navController.navigate(R.id.action_second_blank_to_account);
                         }
                         break;
-                    case R.id.first_blank_fragment:
+                    case R.id.news_fragment:
                         if (current == R.id.account_fragment) {
                             navController.navigate(R.id.action_account_to_first_blank);
                         }
-                        if (current == R.id.second_blank_fragment) {
+                        if (current == R.id.search_fragment) {
                             navController.navigate(R.id.action_second_blank_to_first_blank);
                         }
                         break;
-                    case R.id.second_blank_fragment:
-                        if (current == R.id.first_blank_fragment) {
+                    case R.id.search_fragment:
+                        if (current == R.id.news_fragment) {
                             navController.navigate(R.id.action_first_blank_to_second_blank);
                         }
                         if (current == R.id.account_fragment) {
@@ -79,6 +98,12 @@ public class MainActivity extends BindingActivity {
                 return true;
             }
         });
+
+        Transition transition = TransitionInflater.from(this)
+                .inflateTransition(R.transition.shared_element_transition);
+        getWindow().setSharedElementExitTransition(transition);
+
+        startTrackingConnection();
     }
 
     @Override
@@ -89,6 +114,30 @@ public class MainActivity extends BindingActivity {
     @Override
     public ActivityMainBinding getBinding() {
         return (ActivityMainBinding) super.getBinding();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mConnectionPopupWindow != null) {
+            mConnectionPopupWindow.untrack();
+        }
+    }
+
+    private void startTrackingConnection() {
+        getWindow().getDecorView().addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {
+                mConnectionPopupWindow = new ConnectionPopupWindow(MainActivity.this);
+                mConnectionPopupWindow.trackConnection(getWindow().getDecorView());
+                getWindow().getDecorView().removeOnAttachStateChangeListener(this);
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+                getWindow().getDecorView().removeOnAttachStateChangeListener(this);
+            }
+        });
     }
 
     private void resolveIntent(Intent intent) {
@@ -121,13 +170,13 @@ public class MainActivity extends BindingActivity {
                 Navigation.findNavController(this, R.id.nav_host_fragment);
         switch (page) {
             case 1:
-                navController.navigate(R.id.account_fragment);
+                navController.navigate(R.id.news_fragment);
                 break;
             case 2:
-                navController.navigate(R.id.first_blank_fragment);
+                navController.navigate(R.id.search_fragment);
                 break;
             case 3:
-                navController.navigate(R.id.second_blank_fragment);
+                navController.navigate(R.id.account_fragment);
                 break;
         }
     }
@@ -143,9 +192,7 @@ public class MainActivity extends BindingActivity {
         switch (item.getItemId()) {
 
             case R.id.about:
-                final NavController navController =
-                        Navigation.findNavController(this, R.id.nav_host_fragment);
-                navController.navigate(R.id.action_account_to_about);
+                startActivity(AboutActivity.getIntent(this));
 
                 return true;
             default:

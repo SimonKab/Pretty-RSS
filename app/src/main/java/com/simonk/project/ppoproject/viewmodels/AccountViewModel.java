@@ -18,7 +18,10 @@ public class AccountViewModel extends AndroidViewModel {
     }
 
     public LiveData<AccountRepository.DatabaseResult<Account>> getCurrentAccount() {
-        return AccountRepository.getInstance().getCurrentUser();
+        return AccountRepository.getInstance().getCurrentUser(getApplication().getApplicationContext());
     }
 
+    public LiveData<String> getCurrentUserImage() {
+        return AccountRepository.getInstance().getCurrentUserImage(getApplication().getApplicationContext());
+    }
 }

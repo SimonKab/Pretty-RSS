@@ -1,12 +1,16 @@
 package com.simonk.project.ppoproject.repository;
 
+import android.content.Context;
+
 import com.simonk.project.ppoproject.auth.AuthFactory;
 import com.simonk.project.ppoproject.database.DatabaseFactory;
 import com.simonk.project.ppoproject.database.UserManager;
 import com.simonk.project.ppoproject.model.Account;
+import com.simonk.project.ppoproject.model.Picture;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 
 public class AccountRepository {
 
@@ -34,7 +38,12 @@ public class AccountRepository {
         return AuthFactory.getAuthManager().getCurrentUserId();
     }
 
-    public LiveData<DatabaseResult<Account>> getCurrentUser() {
+    public LiveData<String> getCurrentUserImage(Context context) {
+        String userId = AuthFactory.getAuthManager().getCurrentUserId();
+        return DatabaseFactory.getLocalUserManager().getAccountImage(context, userId);
+    }
+
+    public LiveData<DatabaseResult<Account>> getCurrentUser(Context context) {
         MutableLiveData<DatabaseResult<Account>> resultLiveData = new MutableLiveData<>();
 
         String userId = AuthFactory.getAuthManager().getCurrentUserId();
@@ -43,6 +52,19 @@ public class AccountRepository {
             public void onComplete(Account data) {
                 DatabaseResult<Account> result = new DatabaseResult<>();
                 result.data = data;
+                result.complete = true;
+
+                DatabaseFactory.getLocalUserManager().getAccountImage(context, userId).observeForever(new Observer<String>() {
+                    @Override
+                    public void onChanged(String path) {
+                        Picture picture = new Picture();
+                        picture.setPath(path);
+                        result.data.setPicrute(picture);
+
+                        resultLiveData.setValue(result);
+                    }
+                });
+
                 resultLiveData.setValue(result);
             }
 
@@ -71,7 +93,7 @@ public class AccountRepository {
         return resultLiveData;
     }
 
-    public LiveData<DatabaseResult> saveUser(Account account) {
+    public LiveData<DatabaseResult> saveUser(Context context, Account account) {
         MutableLiveData<DatabaseResult> resultLiveData = new MutableLiveData<>();
         UserManager.SaveDataListener listener = new UserManager.SaveDataListener() {
             @Override
@@ -99,6 +121,9 @@ public class AccountRepository {
             DatabaseFactory.getUserManager().saveAccount(account, listener);
         } else {
             DatabaseFactory.getUserManager().saveAccount(account.getId(), account, listener);
+        }
+        if (account.getPicture() != null) {
+            DatabaseFactory.getLocalUserManager().saveAccountImage(context, account.getId(), account.getPicture().getPath());
         }
         return resultLiveData;
     }
