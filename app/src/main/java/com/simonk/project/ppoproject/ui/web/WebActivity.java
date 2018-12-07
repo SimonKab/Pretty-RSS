@@ -51,7 +51,6 @@ public class WebActivity extends BindingActivity {
         String url = getIntent().getStringExtra(URL_EXTRA);
 
         WebView webView = getBinding().webActivityWebView;
-        webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setDomStorageEnabled(true);
         webView.loadUrl(url);
 
