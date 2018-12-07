@@ -3,24 +3,19 @@ package com.simonk.project.ppoproject.ui.rss.util;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.simonk.project.ppoproject.R;
 import com.simonk.project.ppoproject.databinding.HistoryListItemBinding;
-import com.simonk.project.ppoproject.databinding.RssListItemBinding;
+import com.simonk.project.ppoproject.databinding.SourceListItemBinding;
 import com.simonk.project.ppoproject.model.HistoryEntry;
-import com.simonk.project.ppoproject.rss.RssChannel;
-import com.simonk.project.ppoproject.rss.RssDataProvider;
 import com.simonk.project.ppoproject.ui.util.ObjectListAdapter;
-import com.simonk.project.ppoproject.utils.DateUtils;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class HistoryListAdapter extends ObjectListAdapter<HistoryEntry, HistoryListAdapter.HistoryListViewHolder> {
+public class SourcesListAdapter extends ObjectListAdapter<HistoryEntry, SourcesListAdapter.HistoryListViewHolder> {
 
     private HistoryListViewHolder.ClickListener mClickListener;
 
@@ -29,8 +24,8 @@ public class HistoryListAdapter extends ObjectListAdapter<HistoryEntry, HistoryL
     public HistoryListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        HistoryListItemBinding binding =
-                DataBindingUtil.inflate(inflater, R.layout.history_list_item, parent, false);
+        SourceListItemBinding binding =
+                DataBindingUtil.inflate(inflater, R.layout.source_list_item, parent, false);
 
         return new HistoryListViewHolder(binding, mClickListener);
     }
@@ -49,6 +44,7 @@ public class HistoryListAdapter extends ObjectListAdapter<HistoryEntry, HistoryL
         private ClickListener mClickListener;
         private HistoryEntry mItem;
 
+        private TextView mName;
         private TextView mText;
 
         public interface ClickListener {
@@ -56,11 +52,12 @@ public class HistoryListAdapter extends ObjectListAdapter<HistoryEntry, HistoryL
             void onLongClicked(View v, HistoryEntry historyEntry);
         }
 
-        public HistoryListViewHolder(@NonNull HistoryListItemBinding binding, ClickListener clickListener) {
+        public HistoryListViewHolder(@NonNull SourceListItemBinding binding, ClickListener clickListener) {
             super(binding.getRoot());
             mClickListener = clickListener;
 
-            mText = binding.historyListItemPath;
+            mName = binding.sourceListItemName;
+            mText = binding.sourceListItemPath;
 
             binding.getRoot().setOnClickListener(v -> {
                 if (mClickListener != null) {
@@ -79,6 +76,7 @@ public class HistoryListAdapter extends ObjectListAdapter<HistoryEntry, HistoryL
 
         void bind(HistoryEntry item) {
             mItem = item;
+            mName.setText(item.getName());
             mText.setText(item.getPath());
         }
     }

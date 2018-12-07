@@ -14,6 +14,7 @@ public class SourceAdapter {
         HistoryEntry historyEntry = new HistoryEntry();
         historyEntry.setPath(model.path);
         historyEntry.setName(model.name);
+        historyEntry.setId(model.id);
 
         return historyEntry;
     }
@@ -26,6 +27,7 @@ public class SourceAdapter {
         SourceFirebaseModel model = new SourceFirebaseModel();
         model.path = historyEntry.getPath();
         model.name = historyEntry.getName();
+        model.id = historyEntry.getId();
 
         return model;
     }

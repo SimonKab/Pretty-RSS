@@ -14,8 +14,12 @@ import androidx.lifecycle.MutableLiveData;
 
 public class HistoryListViewModel extends AndroidViewModel {
 
+    private MutableLiveData<String> mEditSource;
+
     public HistoryListViewModel(@NonNull Application application) {
         super(application);
+
+        mEditSource = new MutableLiveData<>();
     }
 
     public LiveData<RssRepository.DatabaseResult<List<HistoryEntry>>> getHistory() {
@@ -27,10 +31,18 @@ public class HistoryListViewModel extends AndroidViewModel {
     }
 
     public LiveData<RssRepository.DatabaseResult<List<HistoryEntry>>> getSources() {
-        return RssRepository.getInstance().getHistory();
+        return RssRepository.getInstance().getSources();
     }
 
     public LiveData<RssRepository.DatabaseResult> saveSource(HistoryEntry entry) {
-        return RssRepository.getInstance().saveHistoryEntry(entry);
+        return RssRepository.getInstance().saveSource(entry);
+    }
+
+    public void setEditSource(String source) {
+        mEditSource.setValue(source);
+    }
+
+    public LiveData<String> getEditSource() {
+        return mEditSource;
     }
 }

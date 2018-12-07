@@ -9,6 +9,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.common.base.Strings;
@@ -38,6 +40,7 @@ import com.simonk.project.ppoproject.utils.DateUtils;
 import com.simonk.project.ppoproject.viewmodels.HistoryListViewModel;
 import com.simonk.project.ppoproject.viewmodels.RssListViewModel;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -45,6 +48,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -52,17 +58,16 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 public class HistoryFragment extends Fragment {
 
     private TextInputEditText mSource;
     private TextInputLayout mSourceLayout;
     private Button mGetNews;
-    private RecyclerView mHistory;
     private ViewGroup mContent;
-    private ViewGroup mHistoryLayout;
-
-    private HistoryListAdapter mAdapter;
+    private TabLayout mTabs;
+    private ViewPager mViewPager;
 
     private HistoryListViewModel mViewModel;
 
@@ -76,17 +81,13 @@ public class HistoryFragment extends Fragment {
                 DataBindingUtil.inflate(inflater, R.layout.history_fragment, parent, false);
         init(binding);
 
-        mViewModel = ViewModelProviders.of(requireActivity()).get(HistoryListViewModel.class);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getFragmentManager());
+        adapter.addFragment(TabHistoryFragment.getInstance(true), "Sources");
+        adapter.addFragment(TabHistoryFragment.getInstance(false), "History");
+        mViewPager.setAdapter(adapter);
+        mTabs.setupWithViewPager(mViewPager);
 
-        mAdapter = new HistoryListAdapter();
-        mHistory.setLayoutManager(new LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false));
-        mHistory.setAdapter(mAdapter);
-        mAdapter.setClickListener(new HistoryListAdapter.HistoryListViewHolder.ClickListener() {
-            @Override
-            public void onClicked(View v, String path) {
-                mSource.setText(path);
-            }
-        });
+        mViewModel = ViewModelProviders.of(requireActivity()).get(HistoryListViewModel.class);
 
         mSource.addTextChangedListener(new TextWatcher() {
             @Override
@@ -121,52 +122,14 @@ public class HistoryFragment extends Fragment {
             return binding.getRoot();
         }
 
-        updateUi();
-
-        return binding.getRoot();
-    }
-
-    private void updateUi() {
-        setProgressView();
-
-        mViewModel.getHistory().observe(this, new Observer<RssRepository.DatabaseResult<List<HistoryEntry>>>() {
+        mViewModel.getEditSource().observe(this, new Observer<String>() {
             @Override
-            public void onChanged(RssRepository.DatabaseResult<List<HistoryEntry>> listDatabaseResult) {
-                if (listDatabaseResult == null) {
-                    setProgressView();
-                    return;
-                }
-
-                if (listDatabaseResult.data != null) {
-                    setContentView();
-
-                    List<HistoryEntry> historyEntries = listDatabaseResult.data;
-                    Collections.reverse(historyEntries);
-
-                    mAdapter.resolveActionChange(() -> {
-                        mAdapter.setItemsList(historyEntries);
-                    });
-                }
-
-                if (listDatabaseResult.networkError) {
-                    setErrorView();
-                    mErrorLayout.handleError(ErrorInterceptor.ErrorType.NETWORK_ERROR);
-                }
-                if (listDatabaseResult.disconnect) {
-                    setErrorView();
-                    mErrorLayout.handleError(ErrorInterceptor.ErrorType.NETWORK_ERROR);
-                }
-                if (listDatabaseResult.error != null) {
-                    setErrorView();
-                    if (listDatabaseResult.error instanceof FirebaseException) {
-                        mErrorLayout.handleError(listDatabaseResult.error);
-                    } else {
-                        throw new RuntimeException(listDatabaseResult.error);
-                    }
-                }
+            public void onChanged(String s) {
+                mSource.setText(s);
             }
         });
 
+        return binding.getRoot();
     }
 
     private void onGetNewsClickListener(View v) {
@@ -198,10 +161,6 @@ public class HistoryFragment extends Fragment {
                     return;
                 }
 
-                if (databaseResult.complete) {
-                    updateUi();
-                }
-
                 if (databaseResult.networkError) {
                     Snackbar.make(getView(), "Network error", Snackbar.LENGTH_LONG).show();
                 }
@@ -222,32 +181,65 @@ public class HistoryFragment extends Fragment {
     private void init(HistoryFragmentBinding binding) {
         mSource = binding.historyFragmentSource;
         mGetNews = binding.historyFragmentGetNews;
-        mHistory = binding.historyFragmentHistory;
+        mTabs = binding.historyFragmentTabs;
+        mViewPager = binding.historyFragmentViewPager;
         mSourceLayout = binding.historyFragmentSourceLayout;
         mProgress = binding.historyFragmentProgress;
         mErrorLayout = binding.historyFragmentError;
         mContent = binding.historyFragmentContent;
-        mHistoryLayout = binding.historyFragmentHistoryLayout;
     }
 
     private void setProgressView() {
         mProgress.setVisibility(View.VISIBLE);
         mErrorLayout.setVisibility(View.GONE);
         mContent.setVisibility(View.GONE);
-        mHistoryLayout.setVisibility(View.GONE);
+        mViewPager.setVisibility(View.GONE);
+        mTabs.setVisibility(View.GONE);
     }
 
     private void setContentView() {
         mProgress.setVisibility(View.GONE);
         mErrorLayout.setVisibility(View.GONE);
         mContent.setVisibility(View.VISIBLE);
-        mHistoryLayout.setVisibility(View.VISIBLE);
+        mViewPager.setVisibility(View.VISIBLE);
+        mTabs.setVisibility(View.VISIBLE);
     }
 
     private void setErrorView() {
         mProgress.setVisibility(View.GONE);
         mErrorLayout.setVisibility(View.VISIBLE);
         mContent.setVisibility(View.GONE);
-        mHistoryLayout.setVisibility(View.GONE);
+        mViewPager.setVisibility(View.GONE);
+        mTabs.setVisibility(View.GONE);
+    }
+
+    private class ViewPagerAdapter extends FragmentStatePagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
+
     }
 }
