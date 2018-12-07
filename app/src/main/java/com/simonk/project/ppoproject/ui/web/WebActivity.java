@@ -12,11 +12,13 @@ import android.transition.TransitionInflater;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.SslErrorHandler;
+import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.simonk.project.ppoproject.R;
@@ -52,6 +54,22 @@ public class WebActivity extends BindingActivity {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setDomStorageEnabled(true);
         webView.loadUrl(url);
+
+        ProgressBar progressBar = getBinding().webActivityProgress;
+        webView.setWebChromeClient(new WebChromeClient() {
+
+            @Override
+            public void onProgressChanged(WebView view, int progress) {
+                if(progress < 100){
+                    progressBar.setVisibility(ProgressBar.VISIBLE);
+                }
+                progressBar.setProgress(progress);
+                if(progress == 100) {
+                    progressBar.setVisibility(ProgressBar.GONE);
+                }
+            }
+
+        });
 
         Transition transition = TransitionInflater.from(this)
                 .inflateTransition(R.transition.shared_element_transition);
