@@ -5,34 +5,107 @@ def getVersion(){
     Process process = cmd.execute()
     String[] descriptionInfo = process.in.text.split('-')
     if (descriptionInfo.length == 1) {
-        return descriptionInfo[0] + "." + 0
+        descriptionInfo[0] = descriptionInfo[0].replace('\n', '')
+        return descriptionInfo[0]+"."+0
     }
     return descriptionInfo[0] + "." + descriptionInfo[1]
 }
 
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
-    compileSdkVersion 27
+    
+    signingConfigs {
+        config {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
+    compileSdkVersion 28
     defaultConfig {
-        applicationId "com.simonk.project.ppoproject"
-        minSdkVersion 23
-        targetSdkVersion 27
+        applicationId "com.simonk.project.prettyrss"
+        minSdkVersion 21
+        targetSdkVersion 28
         versionCode 1
         versionName getVersion()
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "${rootProject.name}-${variant.versionName}.apk"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
+    }
+
+    flavorDimensions "stage"
+    productFlavors {
+        dev {
+            dimension "stage"
+            versionNameSuffix "-dev"
+            manifestPlaceholders.screenOrientation = "unspecified"
+        }
+        master {
+            dimension "stage"
+            manifestPlaceholders.screenOrientation = "portrait"
+        }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    def nav_version = "1.0.0-beta02"
+    def lifecycle_version = "2.0.0"
+    def room_version = "2.1.0-alpha03"
+    def firebase_version = "16.0.5"
+    def retrofit_version = "2.5.0"
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'com.google.android.material:material:1.0.0'
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+
+    implementation "android.arch.navigation:navigation-fragment:$nav_version"
+    implementation "android.arch.navigation:navigation-ui:$nav_version"
+
+    implementation "com.google.firebase:firebase-core:$firebase_version"
+    implementation "com.google.firebase:firebase-auth:$firebase_version"
+    implementation "com.google.firebase:firebase-database:$firebase_version"
+
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-scalars:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-simplexml:$retrofit_version"
+
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    implementation "org.jsoup:jsoup:1.11.3"
+
+    implementation 'com.google.guava:guava:23.0'
+    implementation 'com.github.bumptech.glide:glide:4.8.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
+    implementation 'org.simpleframework:simple-xml:2.7.1'
 }
+
+apply plugin: 'com.google.gms.google-services'

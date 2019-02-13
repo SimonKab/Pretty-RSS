@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="show_login_view_delay">300</integer>
+    <integer name="login_animation_duration">500</integer>
+    <integer name="login_animation_view_delay">150</integer>
+    <integer name="items_in_grid">0</integer>
+    <integer name="rss_channel_app_bar_animation_duration">300</integer>
+</resources>

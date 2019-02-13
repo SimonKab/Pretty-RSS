@@ -1,3 +1,78 @@
 <resources>
-    <string name="app_name">PpoProject</string>
+    <string name="app_name">Pretty RSS</string>
+
+    <string name="permission_enable_button_text_def">Enable</string>
+    <string name="permission_description_textview_text_def">Please, enable permission</string>
+
+    <string name="permission_dialog_setting_button">Settings</string>
+    <string name="permission_dialog_cancel_button">Cancel</string>
+
+    <string name="permission_camera_description_textview">Please, enable camera permission to let take a photo</string>
+    <string name="permission_camera_dialog_title">Camera permission</string>
+    <string name="permission_camera_dialog_description">If you want take a photo, you should allow camera permission in settings</string>
+
+    <string name="permission_read_storage_description_textview">Please, enable storage permission to let show pictures</string>
+    <string name="permission_read_storage_dialog_title">Storage permission</string>
+    <string name="permission_read_storage_dialog_description">If you want see pictures, you should allow storage permission in settings</string>
+
+    <string name="permission_write_storage_description_textview">Please, enable storage permission to let write pictures</string>
+    <string name="permission_write_storage_dialog_title">Storage permission</string>
+    <string name="permission_write_storage_dialog_description">If you want see pictures, you should allow storage permission in settings</string>
+
+    <string name="error_nothing_found">Nothing found</string>
+
+    <string name="name_template">%1$s %2$s</string>
+
+    <string name="permission_go_to_settings">Now you have to go to settings and enable permission manually in Permission section</string>
+
+    <string name="please_first_and_last_name">Please enter your first and last name</string>
+
+    <string name="error_general">Something going wrong</string>
+    <string name="error_unknown_permission">Some permissions was not enabled</string>
+    <string name="error_network">Network error. Please check connection</string>
+    <string name="error_rss_url">Wrong rss url</string>
+    <string name="error_rss_not_provided">Please enter rss source</string>
+    <string name="error_not_authenticated">Please sign in to start</string>
+    <string name="error_confirm_passworn_not_match">Confirmation password does not match</string>
+    <string name="error_wrong_email_or_password">Wrong email or password</string>
+    <string name="error_bad_password">Password is bad</string>
+    <string name="error_user_with_same_email">User with same email already exists</string>
+    <string name="error_unknown">Unknown error</string>
+    <string name="error_invalid_url">Invalid url</string>
+    <string name="error_disconnected">Disconnected</string>
+    <string name="nothing_found">Nothing found</string>
+
+    <string name="source_dialog_fragment_title">Edit source</string>
+
+    <string name="hint_first_name">Your first name...</string>
+    <string name="hint_second_name">Your second name...</string>
+    <string name="hint_telephone">Telephone</string>
+    <string name="hint_address">Address</string>
+    <string name="hint_enter_rss_source">Enter rss source</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_password_again">Password again</string>
+    <string name="hint_name_of_source">Type name of source</string>
+
+    <string name="about_this_app">About this app</string>
+
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="sign_in">Sign in</string>
+    <string name="working">Working...</string>
+    <string name="register">Register</string>
+    <string name="sources">Sources</string>
+    <string name="history">History</string>
+    <string name="retry">Retry</string>
+    <string name="connected">Connected</string>
+    <string name="connecting">Connecting..</string>
+    <string name="sign_out">Sign out</string>
+    <string name="get_news">Get news</string>
+    <string name="finish">Finish</string>
+    <string name="news">News</string>
+    <string name="search">Search</string>
+    <string name="account">Account</string>
+    <string name="about">About</string>
+    <string name="gallery">Gallery</string>
+    <string name="saving">Saving...</string>
 </resources>
