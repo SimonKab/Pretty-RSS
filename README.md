@@ -17,6 +17,7 @@ Last news list will be always available for you, even if the internet connection
 =======
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 * New Android architecture (LiveData, ViewModel, DataBinding) (Jetpack)
 =======
 * New android architecture (LiveData, ViewModel) (Jetpack)
@@ -24,7 +25,13 @@ Last news list will be always available for you, even if the internet connection
 =======
 * New android architecture (LiveData, ViewModel, DataBinding) (Jetpack)
 >>>>>>> d8f799f... Update README.md
+<<<<<<< HEAD
 >>>>>>> 6893526... Update README.md
+=======
+=======
+* New Android architecture (LiveData, ViewModel, DataBinding) (Jetpack)
+>>>>>>> dde7e0f... Update README.md
+>>>>>>> 7a2412a... Update README.md
 * Clean architecture (by Uncle Bob)
 * AndroidX
 * New navigation component (Jetpack)
