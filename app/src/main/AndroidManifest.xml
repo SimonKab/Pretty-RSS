@@ -37,7 +37,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:scheme="sdapp"
-                    android:host="com.simonk.project.ppoproject"
+                    android:host="com.simonk.project.prettyrss"
                     android:pathPrefix="/page/"/>
             </intent-filter>
         </activity>

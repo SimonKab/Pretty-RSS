@@ -28,7 +28,7 @@ android {
 
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.simonk.project.ppoproject"
+        applicationId "com.simonk.project.prettyrss"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
@@ -73,7 +73,7 @@ android {
 }
 
 dependencies {
-    def nav_version = "1.0.0-alpha07"
+    def nav_version = "1.0.0-beta02"
     def lifecycle_version = "2.0.0"
     def room_version = "2.1.0-alpha03"
     def firebase_version = "16.0.5"
@@ -102,7 +102,7 @@ dependencies {
 
     implementation "org.jsoup:jsoup:1.11.3"
 
-    implementation 'com.google.guava:guava:22.0'
+    implementation 'com.google.guava:guava:23.0'
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
     implementation 'org.simpleframework:simple-xml:2.7.1'

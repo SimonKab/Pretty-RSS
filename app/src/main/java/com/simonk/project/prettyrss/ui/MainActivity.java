@@ -1,6 +1,7 @@
 package com.simonk.project.prettyrss.ui;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.databinding.ViewDataBinding;
@@ -41,9 +42,9 @@ public class MainActivity extends BindingActivity {
 
         final NavController navController =
                 Navigation.findNavController(this, R.id.nav_host_fragment);
-        navController.addOnNavigatedListener(new NavController.OnNavigatedListener() {
+        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
             @Override
-            public void onNavigated(@NonNull NavController controller, @NonNull NavDestination destination) {
+            public void onDestinationChanged(@NonNull NavController controller, @NonNull NavDestination destination, @Nullable Bundle arguments) {
                 bottomNavigationView.setSelectedItemId(destination.getId());
             }
         });

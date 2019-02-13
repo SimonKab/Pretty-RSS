@@ -21,7 +21,7 @@ import androidx.databinding.ViewDataBinding;
 
 public class WebActivity extends BindingActivity {
 
-    private static final String URL_EXTRA = "com.simonk.project.ppoproject.ui.web.WebActivity.URL_EXTRA";
+    private static final String URL_EXTRA = "com.simonk.project.prettyrss.ui.web.WebActivity.URL_EXTRA";
 
     public static Intent getIntent(Context context, String url) {
         Intent intent = new Intent(context, WebActivity.class);

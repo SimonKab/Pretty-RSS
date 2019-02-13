@@ -4,7 +4,7 @@
             app:startDestination="@+id/news_fragment">
     <fragment
         android:id="@+id/account_fragment"
-        android:name="com.simonk.project.ppoproject.ui.account.AccountFragment"
+        android:name="com.simonk.project.prettyrss.ui.account.AccountFragment"
         android:label="fragment_account">
         <action
             android:id="@+id/action_account_to_first_blank"
@@ -32,7 +32,7 @@
 
     <fragment
         android:id="@+id/news_fragment"
-        android:name="com.simonk.project.ppoproject.ui.rss.RssListFragment"
+        android:name="com.simonk.project.prettyrss.ui.rss.RssListFragment"
         android:label="fragment_first_blank">
         <action
             android:id="@+id/action_first_blank_to_account"
@@ -52,7 +52,7 @@
 
     <fragment
         android:id="@+id/search_fragment"
-        android:name="com.simonk.project.ppoproject.ui.rss.HistoryFragment"
+        android:name="com.simonk.project.prettyrss.ui.rss.HistoryFragment"
         android:label="fragment_second_blank">
         <action
             android:id="@+id/action_second_blank_to_first_blank"
@@ -72,7 +72,7 @@
 
     <fragment
         android:id="@+id/edit_account_fragment"
-        android:name="com.simonk.project.ppoproject.ui.account.EditAccountFragment"
+        android:name="com.simonk.project.prettyrss.ui.account.EditAccountFragment"
         android:label="fragment_edit_account">
         <action
             android:id="@+id/action_edit_account_to_gallery"
@@ -85,7 +85,7 @@
 
     <fragment
         android:id="@+id/gallery_fragment"
-        android:name="com.simonk.project.ppoproject.ui.pictures.GalleryFragment"
+        android:name="com.simonk.project.prettyrss.ui.pictures.GalleryFragment"
         android:label="fragment_gallery">
     </fragment>
 </navigation>

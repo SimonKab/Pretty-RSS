@@ -28,7 +28,7 @@
                     android:layout_height="wrap_content"
                     android:animateLayoutChanges="true">
 
-                    <com.simonk.project.ppoproject.error.ErrorLayout
+                    <com.simonk.project.prettyrss.error.ErrorLayout
                         android:id="@+id/rss_list_fragment_error"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

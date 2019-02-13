@@ -53,7 +53,7 @@
                 android:layout_marginBottom="16dp"
                 android:visibility="gone"/>
 
-            <com.simonk.project.ppoproject.error.ErrorLayout
+            <com.simonk.project.prettyrss.error.ErrorLayout
                 android:id="@+id/account_fragment_error"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
