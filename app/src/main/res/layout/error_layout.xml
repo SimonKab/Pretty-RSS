@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textAllCaps="true"
-            android:text="Retry"
+            android:text="@string/retry"
             android:background="?attr/selectableItemBackground"
             android:textColor="@color/colorAccent" />
 

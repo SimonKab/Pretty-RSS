@@ -142,7 +142,7 @@
                     android:id="@+id/account_fragment_sign_out"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Sign out"
+                    android:text="@string/sign_out"
                     android:layout_marginTop="32dp"
                     android:textColor="@color/colorAccent"
                     android:background="?android:attr/selectableItemBackground"/>

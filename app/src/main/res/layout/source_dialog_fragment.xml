@@ -7,7 +7,7 @@
         android:id="@+id/source_dialog_fragment_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Type name of source"
+        android:hint="@string/hint_name_of_source"
         android:layout_margin="32dp"/>
 
 </LinearLayout>

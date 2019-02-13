@@ -41,7 +41,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress"
-                        android:hint="Email"/>
+                        android:hint="@string/hint_email"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -55,7 +55,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textPassword"
-                        android:hint="Password"/>
+                        android:hint="@string/hint_password"/>
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -73,7 +73,7 @@
             app:layout_constraintTop_toBottomOf="@id/login_layout_card"
             android:background="@android:color/transparent"
             android:textColor="@android:color/white"
-            android:text="Register"/>
+            android:text="@string/register"/>
 
         <FrameLayout
             android:id="@+id/login_layout_sign_in_frame"
@@ -97,7 +97,7 @@
                 android:id="@+id/login_layout_sign_in_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sign in"
+                android:text="@string/sign_in"
                 android:textStyle="bold"
                 android:textColor="@android:color/white"
                 android:background="@android:color/transparent"/>
@@ -114,7 +114,7 @@
             android:background="?android:attr/selectableItemBackground"
             android:textSize="12sp"
             android:textColor="@android:color/white"
-            android:text="About this app"/>
+            android:text="@string/about_this_app"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

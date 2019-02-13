@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.simonk.project.ppoproject">
+    package="com.simonk.project.prettyrss">
 
     <uses-feature android:name="android.hardware.camera"
         android:required="false"/>
@@ -22,8 +22,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name=".PpoProjectApplication">
-        <activity android:name=".ui.login.LoginActivity"
+        android:name="com.simonk.project.prettyrss.PrettyRssApplication">
+        <activity android:name="com.simonk.project.prettyrss.ui.login.LoginActivity"
             android:theme="@style/SplashScreenTheme"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -31,7 +31,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.MainActivity"
+        <activity android:name="com.simonk.project.prettyrss.ui.MainActivity"
             android:screenOrientation="${screenOrientation}">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -41,10 +41,10 @@
                     android:pathPrefix="/page/"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.web.WebActivity">
+        <activity android:name="com.simonk.project.prettyrss.ui.web.WebActivity">
 
         </activity>
-        <activity android:name=".ui.about.AboutActivity">
+        <activity android:name="com.simonk.project.prettyrss.ui.about.AboutActivity">
 
         </activity>
 

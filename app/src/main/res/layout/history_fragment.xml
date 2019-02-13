@@ -59,7 +59,7 @@
                             android:id="@+id/history_fragment_source"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Enter rss source" />
+                            android:hint="@string/hint_enter_rss_source" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -71,7 +71,7 @@
                         android:layout_marginTop="16dp"
                         android:background="?android:attr/selectableItemBackground"
                         android:textColor="@android:color/white"
-                        android:text="Get news"/>
+                        android:text="@string/get_news"/>
 
                 </LinearLayout>
 

@@ -42,7 +42,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@android:color/white"
-                        android:hint="Your first name..."/>
+                        android:hint="@string/hint_first_name"/>
 
                     <EditText
                         android:id="@+id/edit_account_second_name"
@@ -50,7 +50,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@android:color/white"
                         android:layout_marginBottom="16dp"
-                        android:hint="Your second name..."/>
+                        android:hint="@string/hint_second_name"/>
 
                 </LinearLayout>
 
@@ -105,7 +105,7 @@
                         android:textSize="16sp"
                         android:textColor="@android:color/black"
                         android:inputType="phone"
-                        android:hint="Telephone"/>
+                        android:hint="@string/hint_telephone"/>
 
                 </LinearLayout>
 
@@ -127,7 +127,7 @@
                         android:layout_height="wrap_content"
                         android:textSize="16sp"
                         android:textColor="@android:color/black"
-                        android:hint="Address"/>
+                        android:hint="@string/hint_address"/>
 
                 </LinearLayout>
 

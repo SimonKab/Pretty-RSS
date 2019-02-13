@@ -10,7 +10,7 @@
             android:id="@+id/account_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:name="com.simonk.project.ppoproject.ui.about.AboutFragment"/>
+            android:name="com.simonk.project.prettyrss.ui.about.AboutFragment"/>
 
     </FrameLayout>
 

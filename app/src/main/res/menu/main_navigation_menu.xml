@@ -5,18 +5,18 @@
     <item
         android:id="@+id/news_fragment"
         android:icon="@drawable/ic_account"
-        android:title="News"
+        android:title="@string/news"
         app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/search_fragment"
         android:icon="@drawable/ic_account"
-        android:title="Search"
+        android:title="@string/search"
         app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/account_fragment"
         android:icon="@drawable/ic_account"
-        android:title="Account"
+        android:title="@string/account"
         app:showAsAction="ifRoom"/>
 
 </menu>
