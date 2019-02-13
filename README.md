@@ -4,9 +4,16 @@
 
 App shows rss news from sources you provide. You can read small news description and then checkout whole new on site of rss feeder by clicking news card.
 
-App saves your history, so you can always find sources you've searched recently. You can mark a source as favourite and create your library of rss feeders you like.
+<p align="center">
+  <img src="pictures/news.png" width="300">
+</p>
 
+App saves your history, so you can always find sources you've searched recently. You can mark a source as favourite and create your library of rss feeders you like.
 And all of this will be saved in remote database, you never lose your data.
+
+<p align="center">
+  <img src="pictures/sources.png" width="300">
+</p>
 
 Last news list will be always available for you, even if the internet connection is lost.
 
